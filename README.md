@@ -54,3 +54,5 @@ SQLSTATE=42703
 db2 "SELECT DECIMAL(AVG(TOTAL_EXECUTION_TIME)/1000, 10, 2) FROM SYSIBMADM.SNAPSQL"
 SQL0204N  "SYSIBMADM.SNAPSQL" is an undefined name.  SQLSTATE=42704
 
+
+https://sath.com/blog/weblogic-monitoring-zabbix-jmx/
