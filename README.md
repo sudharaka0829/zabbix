@@ -57,3 +57,38 @@ SQL0204N  "SYSIBMADM.SNAPSQL" is an undefined name.  SQLSTATE=42704
 db2 "SELECT TBSP_NAME, DECIMAL(USED_PAGES/PAGESIZE/1024/1024, 10, 2) FROM SYSIBMADM.TBSP_UTILIZATION"
 SQL0206N  "USED_PAGES" is not valid in the context where it is used.
 SQLSTATE=42703
+
+{
+    zabbix => {
+        host    => '192.168.1.100',
+        port    => 10051,
+        timeout => 30,
+    },
+    daemon => {
+        sleep => 120,
+        split_logs => 1,
+    },
+    db => {
+        default => {
+            user        => 'zabbix',
+            pass        => 'zabbix',
+            query_list  => 'query.props.pl',
+            sleep       => 30,
+            retry_step  => 1,
+        },
+        list   => [ 'XXXPRD', 'XXXDEV', 'XXXTST' ],
+        XXXPRD => {
+            dsn        => 'DBI:DB2:dbname=XXXPRD;host=xxxdb11;port=50000;',
+            query_list => [qw|query.props.pl extra.query.props.pl|],
+            sleep      => 15,
+        },
+        XXXDEV => {
+            dsn  => 'DBI:DB2:dbname=XXXDEV;host=xxxdb01;port=50000;',
+            user => 'zabbix',
+        },
+        XXXTST => {
+            dsn        => 'DBI:DB2:dbname=XXXTST;host=xxxdb02;port=50000;',
+            retry_step => 2,
+        }
+    }
+}
