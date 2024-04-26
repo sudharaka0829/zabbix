@@ -54,3 +54,18 @@ case $metric in
         echo "Usage: $0 [database_size|tablespaces_usage|buffer_pool_hit_ratio|lock_waits|active_connections|query_execution_time|log_file_usage|index_fragmentation|buffer_pool_usage]"
         ;;
 esac
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------
+
