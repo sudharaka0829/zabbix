@@ -21,3 +21,7 @@ Test the ODBC Connection: Use tools like isql or osql to test the ODBC connectio
 
 
 isql MyDB2DSN <username> <password>
+
+
+https://fractio.nl/2007/10/26/setting-up-unixodbc-with-a-remote-db2/
+https://www.unixodbc.org/doc/db2.html
