@@ -1,0 +1,23 @@
+unixODBC.x86_64
+
+
+Install ODBC Driver Manager: Ensure that an ODBC driver manager is installed on the Zabbix server. You can use unixODBC, which is a common choice for Unix/Linux systems.
+Install DB2 ODBC Driver: Install the IBM DB2 ODBC driver on the Zabbix server. You can download the appropriate driver from the IBM website or obtain it from your DB2 installation media.
+Configure ODBC Driver: Configure the ODBC driver by editing the odbcinst.ini file (usually located in /etc/odbcinst.ini). Register the DB2 ODBC driver by adding an entry similar to the following:
+
+
+[DB2]
+Description = IBM DB2 ODBC Driver
+Driver = <path_to_driver_library>
+
+
+Replace <path_to_driver_library> with the path to the DB2 ODBC driver library file.
+Configure ODBC Data Source: Edit the odbc.ini file (usually located in /etc/odbc.ini) to define a data source for your DB2 database. Add an entry similar to the following:
+
+
+Replace <database_name>, <hostname_or_IP>, <port_number>, <username>, and <password> with the appropriate values for your DB2 database.
+Test the ODBC Connection: Use tools like isql or osql to test the ODBC connection from the Zabbix server to the DB2 database. For example:
+
+
+
+isql MyDB2DSN <username> <password>
