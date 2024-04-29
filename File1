@@ -88,3 +88,4 @@ echo "BufferPoolUsages:$buffer_pool_usages"
 
 CallController-20240429_12hr.log 
 CallController-(\d{8}_\d{2}hr)\.log,1
+vfs.file.regexp[/tmp/CallController-(\d{8}_\d{2}hr)\.log,1]
