@@ -1,0 +1,56 @@
+
+Run below commands in zabbix server 
+
+1]yum install unixODBC
+
+2] download and install v11.5.9_linuxx64_client.tar 
+
+./db2_install 
+
+
+3]
+
+mkdir -p /home/db2
+adduser -m -d /home/db2/db2inst db2inst
+passwd db2inst
+/opt/ibm/db2/V11.5/instance/db2icrt db2inst  
+
+/opt/ibm/db2/V11.5/instance/db2icrt: This is the path to the db2icrt executable, which is a utility provided by IBM DB2 to create a new DB2 instance.
+db2inst: This is the name of the new DB2 instance 
+
+
+4]
+vi /home/db2/db2inst/sqllib/cfg/db2cli.ini
+
+[foo]
+Database = FOO
+Protocol = TCPIP
+Hostname = 192.168.10.77
+ServiceName = 50000
+
+
+5]
+/etc/odbcinst.ini.
+[DB2]
+Description             = IBM DB2 Adapter
+Driver                  = /opt/ibm/db2/V11.5/lib64/libdb2.so
+FileUsage               = 1
+DontDLClose             = 1
+
+6]
+/etc/odbc.ini.
+[foo]
+Description = example database connection
+Driver = DB2
+
+7]
+export LD_LIBRARY_PATH=/opt/ibm/db2/V11.5/lib64:$LD_LIBRARY_PATH
+export ODBCINI=/etc/odbc.ini
+export DB2INSTANCE="db2inst"
+
+8]
+isql -v foo db2inst password
+
+
+foo is database name 
+db2inst is database instance name
