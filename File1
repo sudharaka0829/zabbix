@@ -84,3 +84,6 @@ echo "LogFileUsage:$log_file_usage"
 echo "IndexFileUsages:$index_file_usages"
 echo "IndexFragmentations:$index_fragmentations"
 echo "BufferPoolUsages:$buffer_pool_usages"
+
+
+CallController-20240429_12hr.log 
