@@ -247,3 +247,37 @@ echo "LockWaits:\$lock_waits"
 
 EOF
 
+
+
+#!/bin/bash
+
+# DB2 connection details
+DB_USER="your_db_username"
+DB_PASS="your_db_password"
+DB_NAME="pegadb"
+
+# Function to execute DB2 queries
+execute_db2_query() {
+    db2 connect to $DB_NAME > /dev/null 2>&1
+    db2 -x "$1"
+}
+
+# Function to get lock waits
+get_lock_waits() {
+    execute_db2_query "SELECT COUNT(*) FROM SYSIBMADM.LOCKWAITS;"
+}
+
+# Switch to db2inst1 user and execute the script
+su - db2inst1 << EOF
+source /home/db2inst1/sqllib/db2profile
+export DB_USER="$DB_USER"
+export DB_PASS="$DB_PASS"
+export DB_NAME="$DB_NAME"
+
+# Run the function to get lock waits
+lock_waits=\$(get_lock_waits)
+echo "LockWaits:\$lock_waits"
+
+EOF
+
+
