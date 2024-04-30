@@ -159,3 +159,12 @@ FROM
     SYSIBMADM.BP_HITRATIO 
 WHERE 
     DBPARTITIONNUM = <partition_number>; -- Optional: Specify the partition number if you're on a partitioned database.
+
+
+
+
+db2 "SELECT BP_NAME, TOTAL_HIT_RATIO_PERCENT FROM SYSIBMADM.BP_HITRATIO"
+
+SNAPSHOT_TIMESTAMP         DB_NAME                                                                                                                          BP_NAME                                                                                                                          TOTAL_LOGICAL_READS  TOTAL_PHYSICAL_READS TOTAL_HIT_RATIO_PERCENT DATA_LOGICAL_READS   DATA_PHYSICAL_READS  DATA_HIT_RATIO_PERCENT INDEX_LOGICAL_READS  INDEX_PHYSICAL_READS INDEX_HIT_RATIO_PERCENT XDA_LOGICAL_READS    XDA_PHYSICAL_READS   XDA_HIT_RATIO_PERCENT DBPARTITIONNUM MEMBER
+
+
