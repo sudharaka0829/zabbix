@@ -150,3 +150,4 @@ echo "LockWaits:$lock_waits"
 echo "LogFileUsage:$log_file_usage"
 echo "TableUsages:$table_usages"
 
+ db2 "SELECT  DECIMAL(POOL_CUR_BUFFSZ/1024/1024, 10, 2) FROM SYSIBMADM.MON_BP_UTILIZATION;"
