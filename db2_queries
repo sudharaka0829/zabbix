@@ -120,3 +120,6 @@ TableUsages:SQL1032N  No start database manager command was issued.  SQLSTATE=57
 db2start
 db2pd -dbm cfg | grep -i "Database Manager Configuration"
 
+
+Value of type "string" is not suitable for value type "Numeric (float)". Value "/etc/zabbix/script.sh: line 11: db2: command not found
+
