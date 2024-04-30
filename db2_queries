@@ -1,2 +1,4 @@
 
 SELECT SUM(SIZE) / 1024 / 1024 AS "Database Size (MB)" FROM SYSIBMADM.DBPARTITIONGROUP_RESOURCES;
+
+db2 "select sum(TBSP_USED_SIZE_KB) / 1024 / 1024 as DATABASE_SIZE from sysibmadm.TBSP_UTILIZATION" | grep -o '[0-9]*' | head -n1
