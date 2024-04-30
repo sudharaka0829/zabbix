@@ -182,3 +182,33 @@ FROM TABLE(MON_GET_BUFFERPOOL(NULL, -2)) AS BP;
 SELECT POOL_NAME, 
        DECIMAL(POOL_USED_PAGES * 100.0 / POOL_TOTAL_PAGES, 5, 2) AS BUFFER_POOL_USAGE_PERCENT
 FROM SYSIBMADM.MON_BP_UTILIZATION;
+
+
+
+
+
+
+
+
+
+
+#!/bin/bash
+
+# DB2 connection details
+DB_USER="your_db_username"
+DB_PASS="your_db_password"
+DB_NAME="pegadb"
+
+# Function to execute DB2 queries
+execute_db2_query() {
+    db2 connect to $DB_NAME > /dev/null 2>&1
+    db2 -x "$1"
+}
+# Function to get lock waits
+get_lock_waits() {
+    execute_db2_query "SELECT COUNT(*) FROM SYSIBMADM.LOCKWAITS;"
+}
+
+lock_waits=$(get_lock_waits)
+echo "LockWaits:$lock_waits"
+
