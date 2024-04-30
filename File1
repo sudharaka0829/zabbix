@@ -151,3 +151,11 @@ echo "LogFileUsage:$log_file_usage"
 echo "TableUsages:$table_usages"
 
  db2 "SELECT  DECIMAL(POOL_CUR_BUFFSZ/1024/1024, 10, 2) FROM SYSIBMADM.MON_BP_UTILIZATION;"
+
+SELECT 
+    POOL_NAME,
+    (TOTAL_HIT_RATIO * 100) AS BUFFER_POOL_HIT_RATIO_PERCENT
+FROM 
+    SYSIBMADM.BP_HITRATIO 
+WHERE 
+    DBPARTITIONNUM = <partition_number>; -- Optional: Specify the partition number if you're on a partitioned database.
