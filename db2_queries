@@ -49,3 +49,71 @@ SQL0801N  Division by zero was attempted.  SQLSTATE=22012
 select * from syscat.bufferpools  
 
 SELECT BPNAME, ((BPTOTALBPAGES - BPNUMFREE) * 100.0 / BPTOTALBPAGES) AS USED_BUFFER_SPACE_PERCENTAGE FROM SYSIBMADM.BP_PARTITIONS;
+
+
+
+
+#!/bin/bash
+
+# DB2 connection details
+DB_USER="your_db_username"
+DB_PASS="your_db_password"
+DB_NAME="pegadb"
+
+# Function to execute DB2 queries
+execute_db2_query() {
+    db2 connect to $DB_NAME > /dev/null 2>&1
+    db2 -x "$1"
+}
+
+# Function to get the database size
+get_database_size() {
+    execute_db2_query "select sum(TBSP_USED_SIZE_KB) / 1024 / 1024 as DATABASE_SIZE from sysibmadm.TBSP_UTILIZATION" | grep -o '[0-9]*' | head -n1
+}
+
+# Function to get active connections
+get_active_connections() {
+    execute_db2_query "SELECT COUNT(*) FROM SYSIBMADM.APPLICATIONS WHERE APPL_STATUS='UOW EXECUTING'"
+}
+
+# Function to get lock waits
+get_lock_waits() {
+    execute_db2_query "SELECT COUNT(*) FROM SYSIBMADM.LOCKWAITS;"
+}
+
+# Function to get log file usage
+get_log_file_usage() {
+    execute_db2_query "select LOG_UTILIZATION_PERCENT from sysibmadm.MON_TRANSACTION_LOG_UTILIZATION"
+}
+
+# Function to get table usages
+get_table_usages() {
+    execute_db2_query "SELECT TBSP_USED_PAGES * 100.0 / TBSP_TOTAL_PAGES AS USED_PERCENTAGE FROM SYSIBMADM.TBSP_UTILIZATION" | grep -v 'Division'
+}
+
+
+
+# Call functions to collect data
+database_size=$(get_database_size)
+active_connections=$(get_active_connections)
+lock_waits=$(get_lock_waits)
+log_file_usage=$(get_log_file_usage)
+table_usages=$(get_table_usages)
+
+
+# Output data in a format readable by Zabbix
+echo "DatabaseSize:$database_size"
+echo "ActiveConnections:$active_connections"
+echo "LockWaits:$lock_waits"
+echo "LogFileUsage:$log_file_usage"
+echo "TableUsages:$table_usages"
+
+
+
+
+DatabaseSize:1032
+ActiveConnections:SQL1032N  No start database manager command was issued.  SQLSTATE=57019
+LockWaits:SQL1032N  No start database manager command was issued.  SQLSTATE=57019
+LogFileUsage:                   0.19
+TableUsages:SQL1032N  No start database manager command was issued.  SQLSTATE=57019
+
