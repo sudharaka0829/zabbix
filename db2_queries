@@ -117,3 +117,6 @@ LockWaits:SQL1032N  No start database manager command was issued.  SQLSTATE=5701
 LogFileUsage:                   0.19
 TableUsages:SQL1032N  No start database manager command was issued.  SQLSTATE=57019
 
+
+db2pd -dbm cfg | grep -i "Database Manager Configuration"
+
