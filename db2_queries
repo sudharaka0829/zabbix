@@ -46,4 +46,4 @@ USED_PERCENTAGE
                      99.995117187
 SQL0801N  Division by zero was attempted.  SQLSTATE=22012
 
-
+select * from syscat.bufferpools  
