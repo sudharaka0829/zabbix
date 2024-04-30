@@ -157,6 +157,10 @@ SELECT
     (TOTAL_HIT_RATIO * 100) AS BUFFER_POOL_HIT_RATIO_PERCENT
 FROM 
     SYSIBMADM.BP_HITRATIO 
+
+
+SELECT BP_NAME, DECIMAL(BP_CUR_BUFFSZ/1024/1024, 10, 2) AS POOL_CUR_BUFFSZ_MB
+FROM TABLE(MON_GET_BUFFERPOOL(NULL, -2)) AS BP;
 WHERE 
     DBPARTITIONNUM = <partition_number>; -- Optional: Specify the partition number if you're on a partitioned database.
 
