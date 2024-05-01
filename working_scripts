@@ -11,7 +11,7 @@ execute_db2_query() {
   echo "db2inst1" | su - db2inst1 -c "db2 connect to $DB_NAME > /dev/null 2>&1 && db2 -x \"$1\""
 }
 
-# Function to get lock waits
+# Function to get db status
 get_lock_waits() {
     execute_db2_query "SELECT COUNT(*) FROM SYSIBMADM.LOCKWAITS;"
 }
