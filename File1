@@ -296,5 +296,10 @@ get_lock_waits() {
 }
 
 lock_waits=$(get_lock_waits)
-echo "LockWaits:$lock_waits"
+echo "LockWaits:$zabbix ALL=(db2inst1) NOPASSWD: /path/to/your/script.sh
 
+
+
+zabbix ALL=(db2inst1) NOPASSWD: /path/to/your/script.sh
+
+What is this?
