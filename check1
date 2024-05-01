@@ -1,0 +1,1 @@
+zabbix ALL=(db2inst1) NOPASSWD: /path/to/your/script.sh
