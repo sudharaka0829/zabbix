@@ -94,7 +94,7 @@ execute_db2_query() {
 
 }
 
-# Function to get lock waits
+# Function to get db status
 get_db_status() {
     execute_db2_query "SELECT DB_STATUS FROM TABLE(MON_GET_DATABASE(-2)) AS T"
 }
