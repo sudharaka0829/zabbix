@@ -78,3 +78,4 @@ echo "ActiveConnections:$active_connections"
 echo "LogFileUsage:$log_file_usage"
 echo "TableUsages:$table_usages"
 
+---------------------------------------------------------------------------------
