@@ -278,6 +278,23 @@ export DB_NAME="$DB_NAME"
 lock_waits=\$(get_lock_waits)
 echo "LockWaits:\$lock_waits"
 
-EOF
+#!/bin/bash
 
+# DB2 connection details
+DB_USER="your_db_username"
+DB_PASS="your_db_password"
+DB_NAME="pegadb"
+
+# Function to execute DB2 queries
+execute_db2_query() {
+    su - db2inst1 -c "db2 connect to $DB_NAME > /dev/null 2>&1 && db2 -x \"$1\""
+}
+
+# Function to get lock waits
+get_lock_waits() {
+    execute_db2_query "SELECT COUNT(*) FROM SYSIBMADM.LOCKWAITS;"
+}
+
+lock_waits=$(get_lock_waits)
+echo "LockWaits:$lock_waits"
 
