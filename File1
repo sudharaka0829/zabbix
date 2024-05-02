@@ -320,3 +320,51 @@ What is this?
  Local database alias   = PEGADB
 
 SQL1024N  A database connection does not exist.  SQLSTATE=08003
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[db2inst1@ASOMDWFDB404 tmp]$ cat script.sh
+#!/bin/bash
+
+# DB2 connection details
+DB_USER="db2inst1"
+DB_PASS="abcd1234"
+DB_NAME="pegadb"
+
+# Function to execute DB2 queries
+execute_db2_query() {
+  echo "abcd1234" | su - db2inst1 -c "db2 connect to $DB_NAME USER $DB_USER USING $DB_PASS > /dev/null 2>&1 && db2 -x \"$1\""
+}
+
+# Function to get db status
+get_lock_waits() {
+    execute_db2_query "SELECT COUNT(*) FROM SYSIBMADM.LOCKWAITS;"
+}
+
+lock_waits=$(get_lock_waits)
+echo "LockWaits:$lock_waits"
+
+[db2inst1@ASOMDWFDB404 tmp]$ bash -x script.sh
++ DB_USER=db2inst1
++ DB_PASS=abcd1234
++ DB_NAME=pegadb
+++ get_lock_waits
+++ execute_db2_query 'SELECT COUNT(*) FROM SYSIBMADM.LOCKWAITS;'
+++ echo abcd1234
+++ su - db2inst1 -c 'db2 connect to pegadb USER db2inst1 USING abcd1234 > /dev/null 2>&1 && db2 -x "SELECT COUNT(*) FROM SYSIBMADM.LOCKWAITS;"'
+Password: + lock_waits='SQL1024N  A database connection does not exist.  SQLSTATE=08003'
++ echo 'LockWaits:SQL1024N  A database connection does not exist.  SQLSTATE=08003'
+LockWaits:SQL1024N  A database connection does not exist.  SQLSTATE=08003
+
