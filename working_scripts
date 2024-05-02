@@ -8,7 +8,7 @@ DB_NAME="pegadb"
 
 # Function to execute DB2 queries
 execute_db2_query() {
-  echo "db2inst1" | su - db2inst1 -c "db2 connect to $DB_NAME > /dev/null 2>&1 && db2 -x \"$1\""
+  echo "abcd1234" | su - db2inst1 -c "db2 connect to $DB_NAME > /dev/null 2>&1 && db2 -x \"$1\""
 }
 
 # Function to get db status
