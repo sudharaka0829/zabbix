@@ -66,3 +66,15 @@ echo "LockWaits:$lock_waits"
 echo "LogFileUsage:$log_file_usage"
 echo "TableUsages:$table_usages"
 
+
+
+
+DatabaseStatus:SQL0551N  The statement failed because the authorization ID does not have the 
+required authorization or privilege to perform the operation.  Authorization 
+ID: "ROOT".  Operation: "EXECUTE". Object: "SYSPROC.MON_GET_DATABASE".  
+SQLSTATE=42501
+DatabaseSize:1092
+ActiveConnections:SQL1092NTherequestedcommandoroperationfailedbecausetheuserIDdoesnothavetheauthoritytoperformtherequestedcommandoroperation.UserID:"ROOT".
+LockWaits:SQL1092NTherequestedcommandoroperationfailedbecausetheuserIDdoesnothavetheauthoritytoperformtherequestedcommandoroperation.UserID:"ROOT".
+LogFileUsage:2.62
+TableUsages:SQL1092NTherequestedcommandoroperationfailedbecausetheuserIDdoesnothavetheauthoritytoperformtherequestedcommandoroperation.UserID:"ROOT".
