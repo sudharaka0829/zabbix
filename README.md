@@ -1,1 +1,1 @@
-{<Your_Hostname>:db2.metrics[LogFileUsageNumeric].last()}=0
+LogFileUsage:1.18
