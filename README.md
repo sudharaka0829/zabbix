@@ -1,25 +1,63 @@
+#!/usr/bin/sh
 
-To extract only the numeric values for both `DBSize` and `LogFileUsage` using Zabbix preprocessing regular expressions, you can set up two preprocessing rules, one for each field. Here's how you can do it:
+# DB2 connection details
+DB_USER="your_db_username"
+DB_PASS="your_db_password"
+DB_NAME="pegadb"
 
-1. **Navigate to the item**: Go to the Zabbix web interface and locate the item where you want to apply preprocessing.
+# Function to execute DB2 queries
 
-2. **Edit the item**: Click on the item.
+. /home/db2inst1/sqllib/db2profile
+execute_db2_query() {
+    db2 connect to $DB_NAME > /dev/null 2>&1
+    db2 -x "$1"
+}
 
-3. **Go to preprocessing**: Navigate to the "Preprocessing" tab.
+# Function to get db status
+get_db_status() {
+    execute_db2_query "SELECT DB_STATUS FROM TABLE(MON_GET_DATABASE(-2)) AS T"
+}
 
-4. **Create preprocessing rule for DBSize**:
-   - Choose preprocessing type: Select "Regular expression" from the dropdown menu.
-   - Regular expression for DBSize: `DBSize:(\d+)`
-   - Output: Leave the "Output" field empty.
-   - Data type: Choose "Numeric (unsigned)" or "Numeric (float)" based on the type of value expected for DBSize.
-   - Save the preprocessing rule.
+#Function to get the database size
+get_database_size() {
+    execute_db2_query "select sum(TBSP_USED_SIZE_KB) / 1024 / 1024 as DATABASE_SIZE from sysibmadm.TBSP_UTILIZATION" | grep -o '[0-9]*' | head -n1
+}
 
-5. **Create preprocessing rule for LogFileUsage**:
-   - Choose preprocessing type: Select "Regular expression" from the dropdown menu.
-   - Regular expression for LogFileUsage: `LogFileUsage:(\d+(\.\d+)?)`
-   - Output: Leave the "Output" field empty.
-   - Data type: Choose "Numeric (float)" as the data type.
-   - Save the preprocessing rule.
+# Function to get active connections
+get_active_connections() {
+    execute_db2_query "SELECT COUNT(*) FROM SYSIBMADM.APPLICATIONS WHERE APPL_STATUS='UOW EXECUTING'" |  tr -d [:space:]
+}
 
-With these preprocessing rules, Zabbix will extract the numeric values associated with both `DBSize` and `LogFileUsage` from the item output and store them as separate numeric items. You can then use these items for triggers, graphs, or other monitoring purposes.
+# Function to get lock waits
+get_lock_waits() {
+    execute_db2_query "SELECT COUNT(*) FROM SYSIBMADM.LOCKWAITS;" |  tr -d [:space:]
+}
+
+# Function to get log file usage
+get_log_file_usage() {
+    execute_db2_query "select LOG_UTILIZATION_PERCENT from sysibmadm.MON_TRANSACTION_LOG_UTILIZATION" |  tr -d [:space:]
+}
+
+# Function to get table usages
+get_table_usages() {
+    execute_db2_query "SELECT TBSP_USED_PAGES * 100.0 / TBSP_TOTAL_PAGES AS USED_PERCENTAGE FROM SYSIBMADM.TBSP_UTILIZATION" | grep -v 'Division' |  tr -d [:space:]
+}
+
+
+
+#Call functions to collect data
+db_status=$(get_db_status | sed 's/^[[:space:]]*//')
+lock_waits=$(get_lock_waits | sed 's/^[[:space:]]*//')
+database_size=$(get_database_size | sed 's/^[[:space:]]*//')
+active_connections=$(get_active_connections | sed 's/^[[:space:]]*//')
+log_file_usage=$(get_log_file_usage | sed 's/^[[:space:]]*//')
+table_usages=$(get_table_usages | sed 's/^[[:space:]]*//')
+
+#Output data in a format readable by Zabbix
+echo "DatabaseStatus:$db_status"
+echo "DBSize:$database_size"
+echo "ActiveConnections:$active_connections"
+echo "LockWaits:$lock_waits"
+echo "LogFileUsage:$log_file_usage"
+echo "TableUsages:$table_usages"
 
