@@ -1,7 +1,12 @@
 #!/bin/bash
 
+# Function to execute a command as the zabbix user
+run_as_zabbix() {
+    su -s /bin/bash -c "$1" zabbix
+}
+
 # Switch to the zabbix user and source the DB2 profile
-su -s /bin/bash -c ". /home/db2inst1/sqllib/db2profile" zabbix
+run_as_zabbix ". /home/db2inst1/sqllib/db2profile"
 
 # DB2 connection details
 DB_USER="your_db_username"
@@ -10,8 +15,7 @@ DB_NAME="pegadb"
 
 # Function to execute DB2 queries
 execute_db2_query() {
-    db2 connect to $DB_NAME > /dev/null 2>&1
-    db2 -x "$1"
+    run_as_zabbix "db2 connect to $DB_NAME > /dev/null 2>&1 && db2 -x \"$1\""
 }
 
 # Function to get db status
