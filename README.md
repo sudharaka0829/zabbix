@@ -1,1 +1,1 @@
-{<Your_Hostname>:NumericValue.last()} > 5
+LogFileUsage:1.18
