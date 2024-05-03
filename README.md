@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # DB2 connection details
@@ -8,7 +7,7 @@ DB_NAME="pegadb"
 
 # Function to execute DB2 queries
 execute_db2_query() {
-    sudo -u zabbix /bin/bash -c ". /home/db2inst1/sqllib/db2profile && db2 connect to $DB_NAME > /dev/null 2>&1 && db2 -x \"$1\""
+    su -s /bin/bash -c ". /home/db2inst1/sqllib/db2profile && db2 connect to $DB_NAME > /dev/null 2>&1 && db2 -x \"$1\"" zabbix
 }
 
 # Function to get db status
