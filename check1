@@ -1,1 +1,3 @@
 zabbix ALL=(db2inst1) NOPASSWD: /path/to/your/script.sh
+
+UserParameter=db2.metrics[*], /tmp/script.sh $1
