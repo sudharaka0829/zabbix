@@ -1,3 +1,2 @@
-db2.metrics[LogFileUsage]
+regexp("LogFileUsage:(\d+(\.\d+)?)", {<Your_Hostname>:db2.metrics[LogFileUsage].last()})
 
-LogFileUsage:1.18
