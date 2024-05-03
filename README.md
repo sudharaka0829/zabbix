@@ -1,1 +1,1 @@
-regexp("LogFileUsage:(\\d+\\.\\d+)", {db2.metrics[LogFileUsage].last(#1)})
+{ASOMDWFDB404:db2.metrics[LogFileUsage].regexp(LogFileUsage:(\d+(\.\d+)?))}>5
