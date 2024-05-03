@@ -1,1 +1,2 @@
-regexp("LogFileUsage:(\d+(\.\d+)?)", {ASOMDWFDB404:db2.metrics[LogFileUsage].last()})
+DBSize:1092
+LogFileUsage:2.53
