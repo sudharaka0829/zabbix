@@ -78,3 +78,13 @@ ActiveConnections:SQL1092NTherequestedcommandoroperationfailedbecausetheuserIDdo
 LockWaits:SQL1092NTherequestedcommandoroperationfailedbecausetheuserIDdoesnothavetheauthoritytoperformtherequestedcommandoroperation.UserID:"ROOT".
 LogFileUsage:2.62
 TableUsages:SQL1092NTherequestedcommandoroperationfailedbecausetheuserIDdoesnothavetheauthoritytoperformtherequestedcommandoroperation.UserID:"ROOT".
+
+
+
+
+
+
+
+
+
+{ASOMDWFDB404:db2.metrics[LogFileUsage].last(#100)}=0
