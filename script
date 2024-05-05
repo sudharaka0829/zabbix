@@ -60,3 +60,14 @@ echo "LogFileUsage:$log_file_usage"
 echo "TableUsages:$table_usages"
 
 EOF
+
+
+----------------------------------------
+
+# Switch to the db2inst1 user and define functions
+su -s /bin/sh - db2inst1 << 'EOF'
+
+# Your script contents here...
+
+EOF
+
