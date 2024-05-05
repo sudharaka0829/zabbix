@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Switch to the db2inst1 user and define functions
-su - db2inst1 << 'EOF'
+su - db2inst1 << 'EOF' > /dev/null 2>&1
 
 # DB2 connection details
 DB_USER="your_db_username"
