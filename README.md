@@ -91,4 +91,5 @@ PWD = abcd1234
 
 /etc/odbc.ini
 
+db.odbc.select["DB2 Database Status","pegadb","Driver=DB2;Server=184.127.15.169;Database=pegadb;UID=db2inst1;PWD=abcd1234;"]
 
