@@ -1,0 +1,4 @@
+UserParameter=db2.metrics[DatabaseStatus], "/etc/zabbix/scripts/script.sh '$1'"
+
+
+DatabaseStatus:ACTIVE
