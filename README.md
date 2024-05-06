@@ -79,4 +79,16 @@ Pwd = mypassword
 
 Cannot connect to ODBC DSN: [SQL_ERROR]:[HY090][0][[unixODBC][Driver Manager]Invalid string or buffer length]
 
+db.odbc.select[<unique short description>,<dsn>,<connection string>]
+
+[pegadb]
+Description = db2 database connection
+Driver = DB2
+Server = 184.127.15.169
+Database = pegadb
+UID = db2inst1
+PWD = abcd1234
+
+/etc/odbc.ini
+
 
