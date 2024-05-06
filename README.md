@@ -77,5 +77,6 @@ Pwd = mypassword
 
 "Driver={IBM DB2 ODBC DRIVER};Server=myserverhostname;Port=50000;Database=mydatabase;Protocol=TCPIP;Uid=myusername;Pwd=mypassword;"
 
+Cannot connect to ODBC DSN: [SQL_ERROR]:[HY090][0][[unixODBC][Driver Manager]Invalid string or buffer length]
 
 
