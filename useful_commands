@@ -1,1 +1,2 @@
-
+export DB2_HOME=<path to CLI DRIVER installation>/clidriver
+	export PERL5LIB=~/lib/perl5/lib/perl5/site_perl:$HOME/DBD-DB2-1.88/tests:$HOME/DBD-DB2-1.88/Constants
