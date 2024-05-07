@@ -6,3 +6,31 @@ https://metacpan.org/pod/Bundle::DBD::DB2
 yum install perl-CPAN
 
 yum install patch
+
+
+
+1) Install/config DB2 Client in Zabbix Server 
+
+2) git clone https://github.com/anetrusov/ZabbixDBA /opt/zdba
+
+3) cpanm --installdeps /opt/zdba
+
+4) cp /opt/zdba/init.d/zdba /etc/init.d/zdba
+
+5) chmod 0600 /etc/init.d/zdba
+
+6) yum install curl perl bzip2 unzip gcc cpp make patch
+
+7)Install Perlbrew. (We Need to have internet on the server)
+  \curl -L https://install.perlbrew.pl | bash
+
+8) source ~/perl5/perlbrew/etc/bashrc
+
+9) Create separate Perl installation for our purposes
+   perlbrew install perl-5.26.0
+
+10)Switch to an installation and set it as default
+  perlbrew switch perl-5.26.0
+
+11) Install cpanm
+    perlbrew install-cpanm
