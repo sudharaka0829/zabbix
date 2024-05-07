@@ -4,3 +4,5 @@ export PERL5LIB=~/lib/perl5/lib/perl5/site_perl:$HOME/DBD-DB2-1.88/tests:$HOME/D
 https://metacpan.org/pod/Bundle::DBD::DB2
 
 yum install perl-CPAN
+
+yum install patch
