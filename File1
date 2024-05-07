@@ -395,3 +395,5 @@ lock_waits=$(get_lock_waits)
 echo "LockWaits:$lock_waits"
 [root@ASOMDWFDB404 tmp]# sh script.sh
 LockWaits:SQL1024N  A database connection does not exist.  SQLSTATE=08003
+
+https://github.com/ibmdb/perl_DBD-DB2/blob/master/README
