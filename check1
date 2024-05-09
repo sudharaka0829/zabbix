@@ -88,3 +88,6 @@ TableUsages:SQL1092NTherequestedcommandoroperationfailedbecausetheuserIDdoesnoth
 
 
 {ASOMDWFDB404:db2.metrics[LogFileUsage].last(#100)}=0
+
+
+cannot apply multiplier "0.001" to value of type "string": cannot convert value to numeric type
