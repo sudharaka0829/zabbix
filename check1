@@ -103,3 +103,17 @@ JAVA_OPTIONS="$JAVA_OPTIONS -Dcom.sun.management.jmxremote.authenticate=false"
 Potential Conflicts: If another service on your system already uses port 8888, it can lead to conflicts. This could prevent Zabbix from establishing a connection to the WebLogic JMX server, hindering monitoring capabilities.	   
 	   
 Choose a Custom Port: Select a non-standard port number specifically for JMX access in your WebLogic configuration.
+
+
+
+<configuration ...>
+    <... other configurations ...>
+    <subsystem name="jmx">
+        <expose-resolved-address value="true"/>
+        <service url="service:jmx:rmi:///jmxconnector?rmiPort=12345"/>  <connector>
+            <port>${jboss.management.http.port:9990}</port>  <authentication enabled="false">  <user name="your_username" password="your_password"/>  </authentication>
+        </connector>
+    </subsystem>
+    <... other configurations ...>
+</configuration>
+
