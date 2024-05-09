@@ -94,3 +94,8 @@ cannot apply multiplier "0.001" to value of type "string": cannot convert value 
 
 
 Djavax.management.builder.initial=weblogic.management.jmx.mbeanserver.WLSMBeanServerBuilder Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8888 Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false.
+
+JAVA_OPTIONS="$JAVA_OPTIONS -Dcom.sun.management.jmxremote=true"
+JAVA_OPTIONS="$JAVA_OPTIONS -Dcom.sun.management.jmxremote.port=10052"  
+JAVA_OPTIONS="$JAVA_OPTIONS -Dcom.sun.management.jmxremote.ssl=false"  
+JAVA_OPTIONS="$JAVA_OPTIONS -Dcom.sun.management.jmxremote.authenticate=false" 
