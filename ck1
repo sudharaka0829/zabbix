@@ -2,3 +2,6 @@ db.odbc.discovery[$ORACLE.DSN}]
 
 
 Invalid number of parameters.
+
+
+Cannot connect to ODBC DSN: [SQL_ERROR]:[08004][12154][[unixODBC][Oracle][ODBC][Ora]ORA-12154: TNS:could not resolve the connect identifier specified
