@@ -2,3 +2,12 @@ UserParameter=db2.metrics[DatabaseStatus], "/etc/zabbix/scripts/script.sh '$1'"
 
 
 DatabaseStatus:ACTIVE
+
+
+[{"Thread":"1","Archive_Diff":"0"},{"Thread":"2","Archive_Diff":"0"}]
+
+
+select al.thrd "Thread",(almax - lhmax) "Archive_Diff"
+from  (select thread# thrd, max(sequence#) almax from v$archived_log where resetlogs_change#=(select resetlogs_change# from v$database) group by thread#) al,
+(select thread# thrd, max(sequence#) lhmax from v$log_history where resetlogs_change#=(select resetlogs_change# from v$database) group by thread#) lh
+where al.thrd = lh.thrd; 
