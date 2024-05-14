@@ -11,3 +11,6 @@ select al.thrd "Thread",(almax - lhmax) "Archive_Diff"
 from  (select thread# thrd, max(sequence#) almax from v$archived_log where resetlogs_change#=(select resetlogs_change# from v$database) group by thread#) al,
 (select thread# thrd, max(sequence#) lhmax from v$log_history where resetlogs_change#=(select resetlogs_change# from v$database) group by thread#) lh
 where al.thrd = lh.thrd; 
+
+
+Forcepoint_Move:service.info[mvserver].min(#2)}>0
