@@ -13,3 +13,6 @@
 [2024-05-16 12:50:21] [ERROR] [main[getZabbixConfigurationItems(Config.java:1272)]]: Error parsing json objects from Zabbix Server (localhost:10051): null
 [2024-05-16 12:50:21] [ERROR] [main[getZabbixConfigurationItems(Config.java:1380)]]: Error getting item Zabbix Config from Zabbix Server (localhost:10051): null
 [2024-05-16 12:50:21] [INFO ] [main[main(DBforBix.java:192)]]: Sleeping before configuration update...
+
+
+org.json.JSONException: No value for conn
