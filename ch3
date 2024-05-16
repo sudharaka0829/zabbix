@@ -16,3 +16,17 @@
 
 
 org.json.JSONException: No value for conn
+
+
+2024-05-16 14:02:19.399 [pool-1-thread-2] WARN  com.zabbix.gateway.SocketProcessor - error processing request
+com.zabbix.gateway.ZabbixException: org.json.JSONException: No value for conn
+        at com.zabbix.gateway.JMXItemChecker.<init>(JMXItemChecker.java:70) ~[zabbix-java-gateway-3.0.8.jar:na]
+        at com.zabbix.gateway.SocketProcessor.run(SocketProcessor.java:57) ~[zabbix-java-gateway-3.0.8.jar:na]
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [na:1.8.0_392]
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [na:1.8.0_392]
+        at java.lang.Thread.run(Thread.java:750) [na:1.8.0_392]
+Caused by: org.json.JSONException: No value for conn
+        at org.json.JSONObject.get(JSONObject.java:354) ~[android-json-4.3_r3.1.jar:na]
+        at org.json.JSONObject.getString(JSONObject.java:514) ~[android-json-4.3_r3.1.jar:na]
+        at com.zabbix.gateway.JMXItemChecker.<init>(JMXItemChecker.java:55) ~[zabbix-java-gateway-3.0.8.jar:na]
+        ... 4 common frames omitted
