@@ -1,0 +1,15 @@
+ java -jar dbforbix_run.jar -b `pwd` -a start
+[2024-05-16 12:48:20] [INFO ] [main[reinit(DBforBix.java:99)]]: ### executing DBforBix Version 3.1.1-beta: Thu May 16 12:48:20 SGT 2024
+[2024-05-16 12:48:20] [INFO ] [main[reinit(DBforBix.java:100)]]: using config file /opt/2024-05-16/dbforbix-db2-master/dist/linux/conf/config.properties
+[2024-05-16 12:48:20] [ERROR] [main[requestZabbix(Config.java:1182)]]: Zabbix Server (localhost:10051) has returned empty response for request:
+{"request":"proxy config","host":"DBforBIX"}
+[2024-05-16 12:48:21] [ERROR] [main[getZabbixConfigurationItems(Config.java:1272)]]: Error parsing json objects from Zabbix Server (localhost:10051): null
+[2024-05-16 12:48:21] [ERROR] [main[getZabbixConfigurationItems(Config.java:1380)]]: Error getting item Zabbix Config from Zabbix Server (localhost:10051): null
+[2024-05-16 12:48:21] [INFO ] [main[main(DBforBix.java:175)]]: Starting DBforBix Version 3.1.1-beta
+[2024-05-16 12:48:21] [INFO ] [main[main(DBforBix.java:192)]]: Sleeping before configuration update...
+[2024-05-16 12:50:21] [INFO ] [main[main(DBforBix.java:194)]]: Updating DBforBix configuration...
+[2024-05-16 12:50:21] [ERROR] [main[requestZabbix(Config.java:1182)]]: Zabbix Server (localhost:10051) has returned empty response for request:
+{"request":"proxy config","host":"DBforBIX"}
+[2024-05-16 12:50:21] [ERROR] [main[getZabbixConfigurationItems(Config.java:1272)]]: Error parsing json objects from Zabbix Server (localhost:10051): null
+[2024-05-16 12:50:21] [ERROR] [main[getZabbixConfigurationItems(Config.java:1380)]]: Error getting item Zabbix Config from Zabbix Server (localhost:10051): null
+[2024-05-16 12:50:21] [INFO ] [main[main(DBforBix.java:192)]]: Sleeping before configuration update...
