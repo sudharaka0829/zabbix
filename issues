@@ -1,1 +1,5 @@
 {hostname:logrt["C:\\Path\\To\\Your\\LogFile\\.*\.log",error,UTF-8]} > 0
+
+
+11446:20240520:143233.838 database is down: retrying in 10 seconds
+ 11469:20240520:143235.243 fping failed: /usr/sbin/fping: cannot bind source address : Cannot assign requested address
