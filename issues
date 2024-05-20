@@ -4,5 +4,7 @@
 11446:20240520:143233.838 database is down: retrying in 10 seconds
  11469:20240520:143235.243 fping failed: /usr/sbin/fping: cannot bind source address : Cannot assign requested address
 
+Get value from agent failed: bind() failed: [99] Cannot assign requested address
+
 
 https://teams.microsoft.com/l/meetup-join/19%3ameeting_ODIyMmQzYzEtOWY2ZS00ZDUwLWI2ZmEtMWY4ZDJhNGE4ZmRl%40thread.v2/0?context=%7b%22Tid%22%3a%22c1e54f3e-3101-4415-a1dc-ba2469e659e5%22%2c%22Oid%22%3a%2277c95172-9622-4975-8cc4-ec4c107e9159%22%7d
