@@ -407,3 +407,32 @@ Passcode: qJDqk2
 https://stackoverflow.com/questions/7687159/how-to-convert-a-java-program-to-daemon-with-jsvc/7687991#7687991
 
 https://github.com/glinuz/dbforbix-db2
+
+
+
+
+system.run[ps -eo pid,comm,%cpu,%mem --sort=-%cpu | head -n 6,nowait]
+
+
+Name: Top Memory Processes
+Type: Zabbix agent
+Key: system.run[powershell -Command "Get-Process | Sort-Object PM -Descending | Select-Object -First 5 | Format-Table -Property Id, ProcessName, CPU, PM -AutoSize"]
+Type of information: Text
+Update interval: 60s
+
+
+Get-Process | Sort-Object PM -Descending | Select-Object -First 5 | Format-Table -Property Id, ProcessName, PM
+
+
+UserParameter=top.cpu,/etc/zabbix/scripts/top_cpu.sh
+UserParameter=top.mem,/etc/zabbix/scripts/top_mem.sh
+
+
+#!/bin/bash
+echo "Top 5 CPU Usage Processes:"
+ps -eo pid,comm,%cpu,%mem --sort=-%cpu | head -n 6
+echo ""
+echo "Top 5 Memory Usage Processes:"
+ps -eo pid,comm,%cpu,%mem --sort=-%mem | head -n 6
+
+
