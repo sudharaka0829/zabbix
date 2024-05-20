@@ -1,0 +1,46 @@
+1] Servers not in Zabbix based on the inventory provided. (Windows, Unix, NW) . Bi-weekly report.
+   Need to cross-check the Windows/ Linux/ Network inventories with Zabbix production environment.
+   
+   Linux -> 600 server analysis has been done
+   remarks : Need to add other services as well( covalt, qpi. zabbix, splunk status , oci) 
+ 
+  Windows DL ->  VDI_Admin
+  Linux -> Rajagopalan
+  Network DL -> Net_Admin
+ 
+2] JVM Monitoring 
+   Need to check the JAVA gateway status in Zabbix UAT server.
+   
+   Weblogic Monitoring Using JVM has ben done and moving with JBOSS , WebSphere 
+     
+3] DB2 monitoring
+   DB2Bix integration with DB2
+   Need to do more R&D with the DB2, DBForBix, zabbix configurations 
+   
+4] Need to check the status of top five process in windows and Linux environments.
+   we can do it using two methods 
+   1] using shell script on each server | This has been done 
+   2] run zabbix item key system.run[] and retrive data, checking the feacibilty on this
+
+   
+5] Log monitoring problem alerts clearing
+   Need to clear problem alerts in 25 hours related to log monitoring.    
+   we can use expression nodata()     
+	   
+	   
+6]Need to check Zabbix auto registration using metadata. 
+	   
+7]  base templates check for linux / windows and check 
+	8] agent version    
+	   
+covalt, Jpi. zabbix, splunk status , oci 
+
+db query for scripts 
+
+take, latest value check  , those are working 
+
+
+
+
+
+specift or shoud it work, what is required 
