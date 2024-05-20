@@ -1,0 +1,1 @@
+{hostname:logrt["C:\\Path\\To\\Your\\LogFile\\.*\.log",error,UTF-8]} > 0
