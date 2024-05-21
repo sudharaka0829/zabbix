@@ -1,0 +1,13 @@
+key is 
+log["D:\ProgramData\Alteryx\Log\CallController-*hr.log","Error"]
+
+receiving below error
+Cannot obtain information for file "D:\ProgramData\Alteryx\Log\CallController-*hr.log": [2] No such file or directory
+
+log path is
+D:\ProgramData\Alteryx\Log
+
+log file names like below 
+
+CallController-2024-05-16_20hr.log
+CallController-2024-05-16_21hr.log
