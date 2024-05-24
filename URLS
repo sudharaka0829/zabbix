@@ -1,2 +1,39 @@
 Config Weblogic with Zabbix
 https://sath.com/blog/weblogic-monitoring-zabbix-jmx/
+
+
+Hi Deepa/ Ravi, 
+Please find the below MOM for your reference.
+ 
+1] Servers not in Zabbix based on the inventory provided. (Windows, Unix, NW) . Bi-weekly report.
+  Need to cross-check the Windows/ Linux/ Network inventories with Zabbix production environment.
+  
+  Linux -> 600 server analysis has been done, Moving with windows servers. 
+      
+2] JVM Monitoring 
+  Need to check the JAVA gateway status in Zabbix UAT server.
+  WebLogic Monitoring Using JVM has been done and moving with JBOSS , WebSphere and need to check the items which are not working. 
+    
+3] DB2 monitoring
+  DB2Bix integration with DB2
+  Need to do more R&D with the DB2, DBForBix, Zabbix configurations. 
+  
+4] Need to check the status of top five process in windows and Linux environments.
+  we can do it using two methods. 
+  1] using shell script on each server | This has been done 
+  2] run Zabbix item key system.run[] and retrive data, checking the feasibility on it. 
+  
+ Commands ->
+  windows : system.run[powershell -Command "Get-Process | Sort-Object PM -Descending | Select-Object -First 5 | Format-Table -Property Id, ProcessName, CPU, PM -AutoSize"]
+  Linux : system.run[ps -eo pid,comm,%cpu,%mem --sort=-%cpu | head -n 6,nowait]
+ 
+5] Log monitoring problem alerts clearing
+  Need to clear problem alerts in 25 hours related to log monitoring.   
+  we can use expression nodata()     
+               
+6] Need to check Zabbix auto registration using metadata. 
+    Initial analysis has been done and need to config it with Zabbix 7 
+       
+7]  Base Zabbix templates check for Linux / windows to identify the enhancements
+ 
+ 8] Need to check the suitable agent version for Zabbix 7   
