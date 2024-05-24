@@ -104,3 +104,6 @@ specift or shoud it work, what is required
 
 
 specift or shoud it work, what is required 
+
+
+https://github.com/glinuz/dbforbix-db2?tab=readme-ov-file
