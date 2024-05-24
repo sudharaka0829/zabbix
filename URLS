@@ -1,9 +1,6 @@
 Config Weblogic with Zabbix
 https://sath.com/blog/weblogic-monitoring-zabbix-jmx/
 
-
-Hi Deepa/ Ravi, 
-Please find the below MOM for your reference.
  
 1] Servers not in Zabbix based on the inventory provided. (Windows, Unix, NW) . Bi-weekly report.
   Need to cross-check the Windows/ Linux/ Network inventories with Zabbix production environment.
