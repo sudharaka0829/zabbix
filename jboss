@@ -1,0 +1,24 @@
+1] Enable JMX (Java Management Extensions) in JBOSS:
+
+Locate the standalone.xml or domain.xml configuration file.
+Add the following configuration in the <management-interfaces> section to enable JMX:
+
+
+<management-interfaces>
+    <native-interface security-realm="ManagementRealm"/>
+    <http-interface security-realm="ManagementRealm">
+        <http-upgrade enabled="true"/>
+        <socket-binding http="management-http"/>
+    </http-interface>
+</management-interfaces>
+
+
+2] Secure JMX access:
+
+Create a user for JMX monitoring in the application-users.properties file:
+jmx-monitoring-user=your_password
+
+
+3] Restart JBOSS to apply changes:
+
+systemctl restart jboss
