@@ -107,3 +107,11 @@ specift or shoud it work, what is required
 
 
 https://github.com/glinuz/dbforbix-db2?tab=readme-ov-file
+
+
+[2024-05-24 16:51:07] [INFO ] [main[main(DBforBix.java:194)]]: Updating DBforBix configuration...
+[2024-05-24 16:51:07] [ERROR] [main[getZabbixConfigurationItems(Config.java:1380)]]: Error getting item Zabbix Config from Zabbix Server (184.127.0.65:10051): null
+[2024-05-24 16:51:07] [INFO ] [main[main(DBforBix.java:192)]]: Sleeping before configuration update...
+
+
+
