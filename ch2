@@ -14,3 +14,19 @@ where al.thrd = lh.thrd;
 
 
 Forcepoint_Move:service.info[mvserver].min(#2)}>0
+
+
+[root@ASOMDWFDB404 linux]# java -jar dbforbix_run.jar -b `pwd` -a start
+[2024-05-25 20:00:40] [INFO ] [main[reinit(DBforBix.java:99)]]: ### executing DBforBix Version 3.1.1-beta: Sat May 25 20:00:40 SGT 2024
+[2024-05-25 20:00:40] [INFO ] [main[reinit(DBforBix.java:100)]]: using config file /opt/dbforbix-db2-master/dist/linux/conf/config.properties
+[2024-05-25 20:00:40] [INFO ] [main[main(DBforBix.java:175)]]: Starting DBforBix Version 3.1.1-beta
+[2024-05-25 20:00:40] [INFO ] [main[launchSchedulers(Config.java:876)]]: creating worker(184.127.0.65:10051/DBforBIX/ASOMDWFDB404/DB2/db2.discovery.DBforBIX.config[bufferpool,{$DSN}]) for timing: 120
+[2024-05-25 20:00:40] [INFO ] [main[launchSchedulers(Config.java:876)]]: creating worker(184.127.0.65:10051/DBforBIX/ASOMDWFDB404/DB2/db2.discovery.DBforBIX.config[bufferpool,{$DSN}]) for timing: 30
+[2024-05-25 20:00:40] [INFO ] [main[launchSchedulers(Config.java:876)]]: creating worker(184.127.0.65:10051/DBforBIX/ASOMDWFDB404/DB2/db2.discovery.DBforBIX.config[database,{$DSN}]) for timing: 120
+[2024-05-25 20:00:40] [INFO ] [main[launchSchedulers(Config.java:876)]]: creating worker(184.127.0.65:10051/DBforBIX/ASOMDWFDB404/DB2/db2.discovery.DBforBIX.config[database,{$DSN}]) for timing: 30
+[2024-05-25 20:00:40] [INFO ] [main[launchSchedulers(Config.java:876)]]: creating worker(184.127.0.65:10051/DBforBIX/ASOMDWFDB404/DB2/db2.discovery.DBforBIX.config[tablespace,{$DSN}]) for timing: 120
+[2024-05-25 20:00:40] [INFO ] [main[launchSchedulers(Config.java:876)]]: creating worker(184.127.0.65:10051/DBforBIX/ASOMDWFDB404/DB2/db2.discovery.DBforBIX.config[tablespace,{$DSN}]) for timing: 30
+[2024-05-25 20:00:40] [INFO ] [main[main(DBforBix.java:192)]]: Sleeping before configuration update...
+[2024-05-25 20:00:41] [INFO ] [184.127.0.65:10051/DBforBIX/ASOMDWFDB404/DB2/db2.discovery.DBforBIX.config[database,{$DSN}][createConnection(AbstractAdapter.java:61)]]: Creating new connection pool for database DB2
+[2024-05-25 20:00:41] [INFO ] [184.127.0.65:10051/DBforBIX/ASOMDWFDB404/DB2/db2.discovery.DBforBIX.config[bufferpool,{$DSN}][createConnection(AbstractAdapter.java:61)]]: Creating new connection pool for database DB2
+[2024-05-25 20:00:41] [INFO ] [184.127.0.65:10051/DBforBIX/ASOMDWFDB404/DB2/db2.discovery.DBforBIX.config[tablespace,{$DSN}][createConnection(AbstractAdapter.java:61)]]: Creating new connection pool for database DB2
