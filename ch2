@@ -30,3 +30,14 @@ Forcepoint_Move:service.info[mvserver].min(#2)}>0
 [2024-05-25 20:00:41] [INFO ] [184.127.0.65:10051/DBforBIX/ASOMDWFDB404/DB2/db2.discovery.DBforBIX.config[database,{$DSN}][createConnection(AbstractAdapter.java:61)]]: Creating new connection pool for database DB2
 [2024-05-25 20:00:41] [INFO ] [184.127.0.65:10051/DBforBIX/ASOMDWFDB404/DB2/db2.discovery.DBforBIX.config[bufferpool,{$DSN}][createConnection(AbstractAdapter.java:61)]]: Creating new connection pool for database DB2
 [2024-05-25 20:00:41] [INFO ] [184.127.0.65:10051/DBforBIX/ASOMDWFDB404/DB2/db2.discovery.DBforBIX.config[tablespace,{$DSN}][createConnection(AbstractAdapter.java:61)]]: Creating new connection pool for database DB2
+[2024-05-25 20:00:44] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.idxhit[IBMDEFAULTBP]:  has empty value!
+[2024-05-25 20:00:44] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.totalhit[IBMDEFAULTBP]:  has empty value!
+[2024-05-25 20:00:44] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.idxhit[BUFFERPOOL16K]:  has empty value!
+[2024-05-25 20:00:44] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.totalhit[BUFFERPOOL16K]:  has empty value!
+[2024-05-25 20:00:44] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.idxhit[BUFFERPOOL8K]:  has empty value!
+[2024-05-25 20:00:44] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.totalhit[BUFFERPOOL8K]:  has empty value!
+[2024-05-25 20:00:44] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.idxhit[BUFFERPOOL32K]:  has empty value!
+[2024-05-25 20:00:44] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.totalhit[BUFFERPOOL32K]:  has empty value!
+[2024-05-25 20:00:44] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.idxhit[MYDB_32K]:  has empty value!
+[2024-05-25 20:00:44] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.totalhit[MYDB_32K]:  has empty value!
+[2024-05-25 20:00:44] [ERROR] [ZabbixSender[requestZabbix(Config.java:1182)]]: Zabbix Server (184.127.0.65:10051) has returned empty response for request:
