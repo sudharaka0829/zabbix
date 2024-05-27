@@ -1,0 +1,5 @@
+[2024-05-27 10:33:05] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.idxhit[BUFFERPOOL8K]:  has empty value!
+[2024-05-27 10:33:05] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.totalhit[BUFFERPOOL8K]:  has empty value!
+[2024-05-27 10:33:05] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.idxhit[BUFFERPOOL32K]:  has empty value!
+[2024-05-27 10:33:05] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.totalhit[BUFFERPOOL32K]:  has empty value!
+[2024-05-27 10:33:05] [ERROR] [ZabbixSender[requestZabbix(Config.java:1182)]]: Zabbix Server (184.127.0.65:10051) has returned empty response for request:
