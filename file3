@@ -10,3 +10,4 @@ logrt["D:\ProgramData\Alteryx\Log\^\CallController-\d{4}-\d{2}-\d{2}_(0[0-9]|1[0
 
 logrt["D:\ProgramData\Alteryx\Log\^CallController-\d{4}-\d{2}-\d{2}_[0-2][0-9]hr\.log$","lost connection"]
 
+logrt["D:\ProgramData\Alteryx\Log\^CallController-\d{4}-\d{2}-\d{2}_[0-2][0-9]hr\.log$","lost connection"]
