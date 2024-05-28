@@ -24,3 +24,4 @@ UnsafeUserParameters=1
 
 
 db2.discovery.DBforBIX.config[bufferpool,{$DSN}]
+Unsupported item key for this item type.
