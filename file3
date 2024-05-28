@@ -25,3 +25,12 @@ UnsafeUserParameters=1
 
 db2.discovery.DBforBIX.config[bufferpool,{$DSN}]
 Unsupported item key for this item type.
+
+
+Name: DB2 Bufferpool Index Hit
+Type: Zabbix agent
+Key: db2.bufferpool.idxhit[BUFFERPOOL8K]
+Host: ASOMDWFDB404
+Type of information: Numeric (float)
+Update interval: 60s
+
