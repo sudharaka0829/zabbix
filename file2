@@ -1,1 +1,1 @@
-system.run[tasklist /v /fo csv | findstr /i /r /c:"\\[^\\]*$" | sort /r /+6 /c | head -n 6 | cut -d "," -f 2,3,5,6,9]
+system.run[wmic process get ProcessId,CommandLine,UserModeTime,WorkingSetSize /format:csv | findstr /v "CommandLine" | sort /+4 /r | head -n 6]
