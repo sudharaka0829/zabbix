@@ -439,3 +439,38 @@ ps -eo pid,comm,%cpu,%mem --sort=-%mem | head -n 6
 
  25148:20240524:163046.213 there are no files matching "^\CallController-\d{4}-\d{2}-\d{2}_(0[0-9]|1[0-9]|2[0-3])hr\.log$" in "C:\logfiles\" or insufficient access rights
 
+
+
+
+
+To retrieve details of the top five processes including their Process ID, User, CPU usage, Memory usage, and Process Command Line on a Windows host using Zabbix's `system.run` key, you'll need to use a combination of commands to extract and format the information. Here's how you can achieve this:
+
+1. **Identify Top Five Processes**: You can use the `tasklist` command to list all running processes and then sort them based on CPU or memory usage to identify the top five processes.
+
+2. **Construct the Command**: Combine `tasklist`, `findstr`, `sort`, and `head` commands to filter and format the output to display the details of the top five processes.
+
+Here's an example command you can use in the Zabbix item key:
+
+```plaintext
+system.run[tasklist /v /fo csv | findstr /i /r /c:"\\[^\\]*$" | sort /r /+6 /c | head -n 5]
+```
+
+Let's break down the command:
+
+- `tasklist /v /fo csv`: Lists all running processes in CSV format along with verbose information.
+- `findstr /i /r /c:"\\[^\\]*$"`: Filters the processes to find lines ending with a backslash, which typically indicates a file process.
+- `sort /r /+6 /c`: Sorts the filtered list in reverse order based on the sixth column, which represents the CPU or memory usage.
+- `head -n 5`: Displays only the top five lines of the sorted output.
+
+3. **Configure Zabbix Item**: Create a new item in the Zabbix frontend and use the constructed command as the key for the `system.run` command.
+
+4. **Monitor and Verify**: Zabbix will execute the command at specified intervals. You can check the results in the Latest Data section under Monitoring > Latest data in the Zabbix frontend.
+
+### Example Zabbix Item Key:
+- `Key`: `system.run[tasklist /v /fo csv | findstr /i /r /c:"\\[^\\]*$" | sort /r /+6 /c | head -n 5]`
+
+This command will return details of the top five processes including their Process ID, User, CPU usage, Memory usage, and Process Command Line. Adjust the command parameters as needed to fit your specific requirements.
+
+Ensure to test the command outside of Zabbix to ensure it provides the desired output on your Windows system.
+
+
