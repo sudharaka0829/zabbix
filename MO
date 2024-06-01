@@ -222,3 +222,7 @@ Benefits of Using Macros
 Security: Sensitive information like passwords can be stored securely.
 Reusability: Macros can be reused across multiple items, reducing redundancy.
 Ease of Management: Changes to connection details can be made in one place (the macro definition) and will automatically apply to all items using those macros.
+
+
+
+SELECT DISTINCT TBSP_NAME FROM SYSIBMADM.TBSP_UTILIZATION;
