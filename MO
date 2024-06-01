@@ -226,3 +226,8 @@ Ease of Management: Changes to connection details can be made in one place (the 
 
 
 SELECT DISTINCT TBSP_NAME FROM SYSIBMADM.TBSP_UTILIZATION;
+
+
+
+Cannot connect to ODBC DSN: [SQL_ERROR]:[IM002][0][[unixODBC][Driver Manager]Data source name not found, and no default driver specified]
+
