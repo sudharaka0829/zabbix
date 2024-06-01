@@ -248,3 +248,6 @@ export ODBCINSTINI=/etc/odbcinst.ini
 
 
 db.odbc.select[DRIVER={$DB2_DRIVER};DATABASE={$DB2_DATABASE};HOSTNAME={$DB2_HOSTNAME};PORT={$DB2_PORT};PROTOCOL={$DB2_PROTOCOL};UID={$DB2_UID};PWD={$DB2_PWD};,SELECT COUNT(*) FROM my_table]
+
+
+Cannot connect to ODBC DSN: [SQL_ERROR]:[HY090][0][[unixODBC][Driver Manager]Invalid string or buffer length]
