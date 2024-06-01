@@ -474,3 +474,151 @@ This command will return details of the top five processes including their Proce
 Ensure to test the command outside of Zabbix to ensure it provides the desired output on your Windows system.
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Log in to Zabbix:
+Log in to your Zabbix web interface with an account that has permissions to create templates and discovery rules.
+
+Navigate to Configuration > Templates:
+Select the template where you want to create the discovery rule or create a new template.
+
+Create a Discovery Rule:
+
+Go to the Discovery rules tab.
+Click on Create discovery rule.
+Fill in the Discovery Rule Details:
+
+Name: Tablespaces
+Type: ODBC or External check (depending on your DB2 setup and how you plan to connect to DB2)
+Key: db2.discovery.tablespaces
+Update interval: 1h (or as needed)
+Type of information: Text
+SNMP OID: Leave blank if using ODBC or external check
+Database: Your DB2 connection details if using ODBC
+Example for an ODBC Check:
+
+Key: db2.discovery.tablespaces
+
+Type: ODBC
+
+Database: DB2 connection string
+
+SQL query:
+
+sql
+Copy code
+SELECT DISTINCT TBSP_NAME FROM SYSIBMADM.TBSP_UTILIZATION;
+Create LLD Macros:
+
+In the LLD macros section, define a macro for the tablespace name:
+Macro: {#TABLESPACE}
+Value: {#TBSP_NAME}
+Save the Discovery Rule:
+
+3. Create Item Prototypes
+Go to Item Prototypes:
+
+After creating the discovery rule, click on Item prototypes within the discovery rule.
+Create Item Prototypes for Tablespace Monitoring:
+
+Click on Create item prototype for each item you want to monitor.
+Example Item Prototypes:
+
+Total Size of Tablespace:
+
+Name: Tablespace total size KB ({#TABLESPACE})
+
+Type: ODBC or External check
+
+Key: db2.tablespace.totalkb[{#TABLESPACE}]
+
+Type of information: Numeric (unsigned)
+
+Update interval: 30m (or as needed)
+
+SQL query:
+
+sql
+Copy code
+SELECT SUM(TBSP_TOTAL_SIZE_KB) 
+FROM SYSIBMADM.TBSP_UTILIZATION 
+WHERE TBSP_NAME='{#TABLESPACE}';
+Used Size of Tablespace:
+
+Name: Tablespace used size KB ({#TABLESPACE})
+
+Type: ODBC or External check
+
+Key: db2.tablespace.usedkb[{#TABLESPACE}]
+
+Type of information: Numeric (unsigned)
+
+Update interval: 30m (or as needed)
+
+SQL query:
+
+sql
+Copy code
+SELECT SUM(TBSP_USED_SIZE_KB) 
+FROM SYSIBMADM.TBSP_UTILIZATION 
+WHERE TBSP_NAME='{#TABLESPACE}';
+Save the Item Prototypes:
+4. Create Trigger Prototypes
+Go to Trigger Prototypes:
+
+After creating item prototypes, click on Trigger prototypes within the discovery rule.
+Create Trigger Prototypes for Tablespace Monitoring:
+
+Click on Create trigger prototype.
+Example Trigger Prototypes:
+
+Tablespace Free Space Warning:
+
+Name: Tablespace free is < 20% ({#TABLESPACE})
+
+Expression:
+
+plaintext
+Copy code
+({TemplateName:db2.tablespace.totalkb[{#TABLESPACE}].last()}>0) and ({TemplateName:db2.tablespace.usedkb[{#TABLESPACE}].last()}>{TemplateName:db2.tablespace.totalkb[{#TABLESPACE}].last()}*0.8)
+Severity: Warning
+
+Save the Trigger Prototypes:
+5. Verify the Configuration
+Discovery Rule: Ensure the discovery rule is running and discovering tablespaces.
+Items and Triggers: Check if items are being created based on the discovered tablespaces and if triggers are firing appropriately.
+Additional Tips
+Ensure your Zabbix server can connect to the DB2 database and has the necessary permissions.
+Test your SQL queries directly on the DB2 database to make sure they return the expected results.
+Adjust update intervals and thresholds as needed based on your monitoring requirements.
+By following these steps, you can set up Zabbix to monitor DB2 tablespaces using a discovery rule, item prototypes, and trigger prototypes.
+
+
+
+
+
+
+
+
