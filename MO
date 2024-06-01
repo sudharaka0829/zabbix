@@ -279,3 +279,7 @@ db.odbc.select[DRIVER={$DB2_DRIVER};DATABASE={$DB2_DATABASE};HOSTNAME={$DB2_HOST
 {$DB2_PROTOCOL}: TCPIP
 {$DB2_UID}: db2inst1
 {$DB2_PWD}: abcd1234
+
+
+
+Cannot connect to ODBC DSN: [SQL_ERROR]:[HY090][0][[unixODBC][Driver Manager]Invalid string or buffer length]
