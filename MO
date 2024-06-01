@@ -254,3 +254,6 @@ Cannot connect to ODBC DSN: [SQL_ERROR]:[HY090][0][[unixODBC][Driver Manager]Inv
 
 
 No SNMP OID specified. [conf.import.php:89 → CApiWrapper->__call() → CFrontendApiWrapper->callMethod() → CApiWrapper->callMethod() → CFrontendApiWrapper->callClientMethod() → CLocalApiClient->callMethod() → CConfiguration->import() → CConfigurationImport->import() → CConfigurationImport->processDiscoveryRules() → CDiscoveryRule->create() → CDiscoveryRule->checkInput() → CItemGeneral->checkInput() → CApiService::exception() in include/classes/api/services/CItemGeneral.php:531]
+
+
+db.odbc.select[pegadb,"DSN=pegadb;UID=db2inst1;PWD=abcd1234",SQL]
