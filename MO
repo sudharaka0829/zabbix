@@ -235,3 +235,16 @@ Cannot connect to ODBC DSN: [SQL_ERROR]:[IM002][0][[unixODBC][Driver Manager]Dat
 export ODBCINI=/etc/odbc.ini
 export ODBCINSTINI=/etc/odbcinst.ini
 
+
+
+{$DB2_DRIVER}: DB2
+{$DB2_DATABASE}: pegadb
+{$DB2_HOSTNAME}: 184.127.15.169
+{$DB2_PORT}: 50000
+{$DB2_PROTOCOL}: TCPIP
+{$DB2_UID}: db2inst1
+{$DB2_PWD}: abcd1234
+
+
+
+db.odbc.select[DRIVER={$DB2_DRIVER};DATABASE={$DB2_DATABASE};HOSTNAME={$DB2_HOSTNAME};PORT={$DB2_PORT};PROTOCOL={$DB2_PROTOCOL};UID={$DB2_UID};PWD={$DB2_PWD};,SELECT COUNT(*) FROM my_table]
