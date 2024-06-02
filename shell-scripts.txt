@@ -1,0 +1,144 @@
+UserParameter=db2.discovery.bufferpools,/etc/zabbix/scripts/db2_discovery_bufferpools.sh
+UserParameter=db2.bufferpool.idxhit[*],/etc/zabbix/scripts/db2_bufferpool_idxhit.sh $1
+UserParameter=db2.bufferpool.totalhit[*],/etc/zabbix/scripts/db2_bufferpool_totalhit.sh $1
+UserParameter=db2.discovery.databases,/etc/zabbix/scripts/db2_discovery_databases.sh
+UserParameter=db2.alive[*],/etc/zabbix/scripts/db2_alive.sh $1
+UserParameter=db2.discovery.tablespaces,/etc/zabbix/scripts/db2_discovery_tablespaces.sh
+UserParameter=db2.tablespace.totalkb[*],/etc/zabbix/scripts/db2_tablespace_totalkb.sh $1
+UserParameter=db2.tablespace.usedkb[*],/etc/zabbix/scripts/db2_tablespace_usedkb.sh $1
+
+
+#!/bin/bash
+# Script to discover bufferpools
+su - db2inst1 -c "db2 'SELECT bp_name FROM SYSIBMADM.BP_HITRATIO WHERE bp_name NOT LIKE \"IBMSYSTEM%\"'"
+
+
+db2_discovery_bufferpools.sh
+
+#!/bin/bash
+# Script to discover bufferpools
+
+result=$(su - db2inst1 -c "db2 -x 'SELECT bp_name FROM SYSIBMADM.BP_HITRATIO WHERE bp_name NOT LIKE \"IBMSYSTEM%\"'")
+
+# Format the output as JSON for Zabbix
+echo '{"data":['
+first=1
+while read -r bp_name; do
+    if [ $first -ne 1 ]; then
+        echo ','
+    fi
+    echo -n "{\"{#BUFFERPOOL}\":\"$bp_name\"}"
+    first=0
+done <<< "$result"
+echo ']}'
+
+
+
+
+db2_bufferpool_idxhit.sh
+
+#!/bin/bash
+# Script to get bufferpool index hit ratio
+bp_name=$1
+
+su - db2inst1 -c "db2 -x \"SELECT bp_idx_hit_ratio_percent FROM SYSIBMADM.BP_HITRATIO WHERE bp_name='$bp_name'\""
+
+
+
+db2_bufferpool_totalhit.sh
+
+#!/bin/bash
+# Script to get bufferpool total hit ratio
+bp_name=$1
+
+su - db2inst1 -c "db2 -x \"SELECT bp_hit_ratio_percent FROM SYSIBMADM.BP_HITRATIO WHERE bp_name='$bp_name'\""
+
+
+
+
+db2_discovery_databases.sh
+#!/bin/bash
+# Script to discover databases
+
+result=$(su - db2inst1 -c "db2 -x 'SELECT name FROM SYSIBMADM.DATABASES'")
+
+# Format the output as JSON for Zabbix
+echo '{"data":['
+first=1
+while read -r db_name; do
+    if [ $first -ne 1 ]; then
+        echo ','
+    fi
+    echo -n "{\"{#DBNAME}\":\"$db_name\"}"
+    first=0
+done <<< "$result"
+echo ']}'
+
+
+
+
+db2_alive.sh
+#!/bin/bash
+# Script to check if database is alive
+db_name=$1
+
+result=$(su - db2inst1 -c "db2 -x 'CONNECT TO $db_name'")
+if [[ $result == *"SQLSTATE=00000"* ]]; then
+    echo 1
+else
+    echo 0
+fi
+
+
+
+db2_discovery_tablespaces.sh
+
+#!/bin/bash
+# Script to discover tablespaces
+
+result=$(su - db2inst1 -c "db2 -x 'SELECT tbsp_name FROM SYSIBMADM.TBSP_UTILIZATION'")
+
+# Format the output as JSON for Zabbix
+echo '{"data":['
+first=1
+while read -r tbsp_name; do
+    if [ $first -ne 1 ]; then
+        echo ','
+    fi
+    echo -n "{\"{#TABLESPACE}\":\"$tbsp_name\"}"
+    first=0
+done <<< "$result"
+echo ']}'
+
+
+db2_tablespace_totalkb.sh
+
+#!/bin/bash
+# Script to get tablespace total size in KB
+tbsp_name=$1
+
+su - db2inst1 -c "db2 -x \"SELECT total_pages * page_size / 1024 FROM SYSIBMADM.TBSP_UTILIZATION WHERE tbsp_name='$tbsp_name'\""
+
+
+
+
+db2_tablespace_usedkb.sh
+
+#!/bin/bash
+# Script to get tablespace used size in KB
+tbsp_name=$1
+
+su - db2inst1 -c "db2 -x \"SELECT used_pages * page_size / 1024 FROM SYSIBMADM.TBSP_UTILIZATION WHERE tbsp_name='$tbsp_name'\""
+
+
+chmod +x /etc/zabbix/scripts/db2_discovery_bufferpools.sh
+chmod +x /etc/zabbix/scripts/db2_bufferpool_idxhit.sh
+chmod +x /etc/zabbix/scripts/db2_bufferpool_totalhit.sh
+chmod +x /etc/zabbix/scripts/db2_discovery_databases.sh
+chmod +x /etc/zabbix/scripts/db2_alive.sh
+chmod +x /etc/zabbix/scripts/db2_discovery_tablespaces.sh
+chmod +x /etc/zabbix/scripts/db2_tablespace_totalkb.sh
+chmod +x /etc/zabbix/scripts/db2_tablespace_usedkb.sh
+
+
+sudo systemctl restart zabbix-agent
