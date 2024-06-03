@@ -285,4 +285,145 @@ Zabbix 6.4 offers significant improvements over Zabbix 5 in terms of scalability
 
 
 
+Sure, here is a detailed comparison of Zabbix 5 and Zabbix 6.4 for the "Linux by Zabbix agent" template, including the differences in monitoring keys and the additional features introduced in Zabbix 6.4.
 
+### Zabbix 5: Linux by Zabbix Agent Template Keys
+
+1. **CPU Monitoring**:
+   - `system.cpu.load[percpu,avg1]`
+   - `system.cpu.load[percpu,avg5]`
+   - `system.cpu.load[percpu,avg15]`
+   - `system.cpu.util[,user]`
+   - `system.cpu.util[,system]`
+   - `system.cpu.util[,idle]`
+   - `system.cpu.util[,iowait]`
+   - `system.cpu.util[,nice]`
+   - `system.cpu.util[,irq]`
+   - `system.cpu.util[,softirq]`
+
+2. **Memory Monitoring**:
+   - `vm.memory.size[total]`
+   - `vm.memory.size[free]`
+   - `vm.memory.size[available]`
+   - `vm.memory.size[used]`
+   - `vm.memory.size[cached]`
+   - `vm.memory.size[buffered]`
+   - `vm.memory.size[shared]`
+
+3. **Disk Monitoring**:
+   - `vfs.fs.size[/,total]`
+   - `vfs.fs.size[/,free]`
+   - `vfs.fs.size[/,used]`
+   - `vfs.fs.inode[/,total]`
+   - `vfs.fs.inode[/,free]`
+   - `vfs.fs.inode[/,used]`
+   - `vfs.fs.size[/,pfree]`
+   - `vfs.fs.size[/,pused]`
+
+4. **Network Monitoring**:
+   - `net.if.in[eth0]`
+   - `net.if.out[eth0]`
+   - `net.if.total[eth0]`
+   - `net.if.in.errors[eth0]`
+   - `net.if.out.errors[eth0]`
+   - `net.if.in.discards[eth0]`
+   - `net.if.out.discards[eth0]`
+
+5. **System Monitoring**:
+   - `system.uptime`
+   - `system.hostname`
+   - `system.swap.size[,total]`
+   - `system.swap.size[,free]`
+   - `system.swap.size[,used]`
+   - `system.uname`
+   - `system.localtime`
+
+### Zabbix 6.4: Linux by Zabbix Agent Template Keys
+
+**Included in the Basic Template**:
+1. **Enhanced CPU Monitoring**:
+   - `system.cpu.load[percpu,avg1]`
+   - `system.cpu.load[percpu,avg5]`
+   - `system.cpu.load[percpu,avg15]`
+   - `system.cpu.util[,user]`
+   - `system.cpu.util[,system]`
+   - `system.cpu.util[,idle]`
+   - `system.cpu.util[,iowait]`
+   - `system.cpu.util[,nice]`
+   - `system.cpu.util[,irq]`
+   - `system.cpu.util[,softirq]`
+   - `system.cpu.util[,guest]`
+   - `system.cpu.util[,steal]`
+
+2. **Enhanced Memory Monitoring**:
+   - `vm.memory.size[total]`
+   - `vm.memory.size[free]`
+   - `vm.memory.size[available]`
+   - `vm.memory.size[used]`
+   - `vm.memory.size[cached]`
+   - `vm.memory.size[buffered]`
+   - `vm.memory.size[shared]`
+   - `vm.memory.size[sreclaimable]`
+   - `vm.memory.size[swap.total]`
+   - `vm.memory.size[swap.free]`
+   - `vm.memory.size[swap.used]`
+
+3. **Enhanced Disk Monitoring**:
+   - `vfs.fs.size[/,total]`
+   - `vfs.fs.size[/,free]`
+   - `vfs.fs.size[/,used]`
+   - `vfs.fs.size[/,pfree]`
+   - `vfs.fs.size[/,pused]`
+   - `vfs.fs.inode[/,total]`
+   - `vfs.fs.inode[/,free]`
+   - `vfs.fs.inode[/,used]`
+   - `vfs.dev.read.ops[sda]`
+   - `vfs.dev.write.ops[sda]`
+   - `vfs.dev.read.bytes[sda]`
+   - `vfs.dev.write.bytes[sda]`
+   - `vfs.dev.read.ms[sda]`
+   - `vfs.dev.write.ms[sda]`
+
+4. **Enhanced Network Monitoring**:
+   - `net.if.in[eth0]`
+   - `net.if.out[eth0]`
+   - `net.if.total[eth0]`
+   - `net.if.in.errors[eth0]`
+   - `net.if.out.errors[eth0]`
+   - `net.if.in.discards[eth0]`
+   - `net.if.out.discards[eth0]`
+   - `net.if.speed[eth0]`
+   - `net.if.status[eth0]`
+
+5. **System Monitoring**:
+   - `system.uptime`
+   - `system.hostname`
+   - `system.swap.size[,total]`
+   - `system.swap.size[,free]`
+   - `system.swap.size[,used]`
+   - `system.uname`
+   - `system.localtime`
+   - `system.cpu.num`
+   - `system.hw.cpu[0,model]`
+   - `system.hw.cpu[0,speed]`
+   - `system.hw.cpu[0,core]`
+
+**Not Included in the Basic Template (Available in Specialized Templates)**:
+1. **SELinux Monitoring**:
+   - `system.selinux.status`
+
+2. **Systemd Services Monitoring**:
+   - `systemd.unit.info[unit_name]`
+   - `systemd.unit.state[unit_name]`
+
+### Summary
+
+**Linux by Zabbix Agent Basic Template (Zabbix 6.4)**:
+- Provides more detailed and comprehensive monitoring for CPU, memory, disk, network, and system metrics compared to Zabbix 5.
+- Includes enhancements like more detailed memory metrics, additional CPU utilization metrics, improved network monitoring, and detailed disk I/O metrics.
+
+**Specialized Templates**:
+- **SELinux Monitoring**: Available in specialized templates focused on security.
+- **Systemd Services Monitoring**: Available in specialized templates focusing on system services.
+
+The improvements in Zabbix 6.4 for Linux templates make the basic template more robust, while specialized templates provide additional detailed monitoring for specific areas. For comprehensive monitoring, it is advisable to link the basic template with the necessary specialized templates to cover all aspects of system performance and health.
