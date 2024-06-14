@@ -1,4 +1,3 @@
 jmx["com.bea:ServerRuntime={$INSTANCIA},Name=JTARuntime,Type=JTARuntime",ActiveTransactionsTotalCount]
 
 Object or attribute not found: com.bea:ServerRuntime=MANAGED_acm1101,Name=ThreadPoolRuntime,Type=ThreadPoolRuntime
-cc
