@@ -1,1 +1,7 @@
 {Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",l2nd,4,,].logsource(^l2nd$)}=1 and {Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",l2nd,4,,].logeventid(4)}=1
+
+Item key
+eventlog[System,,"ERROR|CRITICAL",mpio,16,,]
+
+Trigger
+{Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",mpio,16,,].logsource(^mpio$)}=1 and {Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",mpio,16,,].logeventid(16)}=1
