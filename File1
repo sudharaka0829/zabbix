@@ -5,3 +5,10 @@ eventlog[System,,"ERROR|CRITICAL",mpio,16,,]
 
 Trigger
 {Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",mpio,16,,].logsource(^mpio$)}=1 and {Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",mpio,16,,].logeventid(16)}=1
+
+
+{Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",mpio,16,,].logsource(^mpio$)}=1 and
+{Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",mpio,16,,].logeventid(16)}=1
+
+
+{Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",mpio,16,,].nodata(3600)}=1
