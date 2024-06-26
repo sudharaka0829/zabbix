@@ -1,14 +1,5 @@
-MQ Channel Status abnormal shutdown
-Max Message Queue Depth
-Client and Server Connection Channel status
-MQ Event Messages 
-MQ Objects Authorization alerts
-Message Sequence missmatch alert
-Channel SSL errors
-Unknow Objects alert
-QMgr remote connection alerts
-Deadletter Queue for posion message
-QMgr activity alerts
-Inhibit Event Message alert
-Queue Service Interval 
-Message Statices Alerts 
+184.106.234.27
+Get value from agent failed: ZBX_TCP_READ() failed: [104] Connection reset by peer
+
+184.106.232.30
+Received empty response from Zabbix Agent at [184.106.232.30]. Assuming that agent dropped connection because of access permissions.
