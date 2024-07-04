@@ -1,9 +1,17 @@
 system_u:system_r:unconfined_service_t:s0 1684 ? 00:04:56 zabbix_agent2 
 
 
-sudo semanage fcontext -a -t httpd_sys_content_t "/usr/share/zabbix(/.*)?"
-sudo restorecon -R /usr/share/zabbix
+semanage fcontext -l | grep zabbix
 
-ls -Z /usr/share/zabbix
+sudo semanage fcontext -a -t zabbix_agent_exec_t "/usr/sbin/zabbix_agent2"
+sudo restorecon -v /usr/sbin/zabbix_agent2
 
-sudo systemctl restart zabbix-server
+
+
+sudo semanage fcontext -a -t zabbix_agent_var_log_t "/var/log/zabbix(/.*)?"
+sudo restorecon -R /var/log/zabbix
+
+sudo semanage fcontext -a -t zabbix_agent_conf_t "/etc/zabbix(/.*)?"
+sudo restorecon -R /etc/zabbix
+
+
