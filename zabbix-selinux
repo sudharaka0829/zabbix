@@ -1,1 +1,9 @@
 system_u:system_r:unconfined_service_t:s0 1684 ? 00:04:56 zabbix_agent2 
+
+
+sudo semanage fcontext -a -t httpd_sys_content_t "/usr/share/zabbix(/.*)?"
+sudo restorecon -R /usr/share/zabbix
+
+ls -Z /usr/share/zabbix
+
+sudo systemctl restart zabbix-server
