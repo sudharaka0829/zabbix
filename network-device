@@ -3,3 +3,6 @@ SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, CASE WHEN i
 
 
 SELECT h.host AS hostname, g.name AS host_group, t.name AS template_name FROM hosts h JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid LEFT JOIN hosts_templates ht ON h.hostid = ht.hostid LEFT JOIN hosts t ON ht.templateid = t.hostid WHERE g.name IN ('SPR-SD-Network', 'HCM-BD-Network', 'HNI-BD-Network', 'SDY-SD-Network', 'DJK-BD-Network', 'NDL-BD-Network', 'ULN-BD-Network', 'BBY-BD-Network') ORDER BY h.hostid;
+
+
+SELECT h.host AS hostname, g.name AS host_group, t.name AS template_name, i.name AS item_name, i.key_ AS item_key, i.snmp_oid AS oid FROM hosts h JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid LEFT JOIN hosts_templates ht ON h.hostid = ht.hostid LEFT JOIN hosts t ON ht.templateid = t.hostid LEFT JOIN items i ON i.hostid = t.hostid WHERE g.name IN ('SPR-SD-Network', 'HCM-BD-Network', 'HNI-BD-Network', 'SDY-SD-Network', 'DJK-BD-Network', 'NDL-BD-Network', 'ULN-BD-Network', 'BBY-BD-Network') AND i.snmp_oid IS NOT NULL ORDER BY h.hostid;
