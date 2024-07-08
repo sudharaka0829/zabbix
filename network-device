@@ -15,9 +15,12 @@ SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, 'Agent' AS 
 
 
 
-SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, 'Agent' AS agent_type, MAX(CASE WHEN item.key_ = 'agent.version' THEN item.value END) AS agent_version, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid JOIN items item ON h.hostid = item.hostid WHERE i.type = 1 GROUP BY h.host, i.ip, g.name, h.status ORDER BY h.hostid;
-
+SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, 'Agent' AS agent_type, MAX(CASE WHEN i.key_ = 'agent.version' THEN hs.value END) AS agent_version, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid JOIN items item ON h.hostid = item.hostid JOIN history_str hs ON item.itemid = hs.itemid WHERE i.type = 1 AND i.key_ = 'agent.version' GROUP BY h.host, i.ip, g.name, h.status ORDER BY h.hostid;
 
 
 MariaDB [zabbix]> SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, 'Agent' AS agent_type, MAX(CASE WHEN item.key_ = 'agent.version' THEN item.value END) AS agent_version, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid JOIN items item ON h.hostid = item.hostid WHERE i.type = 1 GROUP BY h.host, i.ip, g.name, h.status ORDER BY h.hostid;
 ERROR 1054 (42S22): Unknown column 'item.value' in 'field list'
+
+
+
+SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, 'Agent' AS agent_type, MAX(CASE WHEN i.key_ = 'agent.version' THEN hs.value END) AS agent_version, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid JOIN items item ON h.hostid = item.hostid JOIN history_str hs ON item.itemid = hs.itemid WHERE i.type = 1 AND i.key_ = 'agent.version' GROUP BY h.host, i.ip, g.name, h.status ORDER BY h.hostid;
