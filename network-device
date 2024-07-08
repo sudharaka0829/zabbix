@@ -1,21 +1,5 @@
 SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, CASE WHEN i.type = 1 THEN 'Agent' WHEN i.type = 2 THEN 'SNMP' WHEN i.type = 3 THEN 'IPMI' WHEN i.type = 4 THEN 'JMX' ELSE 'Unknown' END AS agent_type, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid WHERE g.name in  ('SPR-SD-Network','HCM-BD-Network','HNI-BD-Network','SDY-SD-Network','DJK-BD-Network','NDL-BD-Network','ULN-BD-Network','BBY-BD-Network')  ORDER BY h.hostid, i.interfaceid;
-
-
-
 SELECT h.host AS hostname, g.name AS host_group, t.name AS template_name FROM hosts h JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid LEFT JOIN hosts_templates ht ON h.hostid = ht.hostid LEFT JOIN hosts t ON ht.templateid = t.hostid WHERE g.name IN ('SPR-SD-Network', 'HCM-BD-Network', 'HNI-BD-Network', 'SDY-SD-Network', 'DJK-BD-Network', 'NDL-BD-Network', 'ULN-BD-Network', 'BBY-BD-Network') ORDER BY h.hostid;
-
-
 SELECT h.host AS hostname, g.name AS host_group, t.name AS template_name, i.name AS item_name, i.key_ AS item_key, i.snmp_oid AS oid FROM hosts h JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid LEFT JOIN hosts_templates ht ON h.hostid = ht.hostid LEFT JOIN hosts t ON ht.templateid = t.hostid LEFT JOIN items i ON i.hostid = t.hostid WHERE g.name IN ('SPR-SD-Network', 'HCM-BD-Network', 'HNI-BD-Network', 'SDY-SD-Network', 'DJK-BD-Network', 'NDL-BD-Network', 'ULN-BD-Network', 'BBY-BD-Network') AND i.snmp_oid IS NOT NULL ORDER BY h.hostid;
 
-
-SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, CASE WHEN i.type = 1 THEN 'Agent' WHEN i.type = 2 THEN 'SNMP' WHEN i.type = 3 THEN 'IPMI' WHEN i.type = 4 THEN 'JMX' ELSE 'Unknown' END AS agent_type, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status, iv.value AS agent_version FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid JOIN items it ON h.hostid = it.hostid JOIN items_values iv ON it.itemid = iv.itemid WHERE it.key_ = 'agent.version' ORDER BY h.hostid, i.interfaceid;
-
-
-SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, CASE WHEN i.type = 1 THEN 'Agent' WHEN i.type = 2 THEN 'SNMP' WHEN i.type = 3 THEN 'IPMI' WHEN i.type = 4 THEN 'JMX' ELSE 'Unknown' END AS agent_type, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status, iv.value AS agent_version FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid JOIN items it ON h.hostid = it.hostid JOIN items_values iv ON it.itemid = iv.itemid WHERE it.key_ = 'agent.version' ORDER BY h.hostid, i.interfaceid;
-ERROR 1146 (42S02): Table 'zabbix.items_values' doesn't exist
-
-
-SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, CASE WHEN i.type = 1 THEN 'Agent' WHEN i.type = 2 THEN 'SNMP' WHEN i.type = 3 THEN 'IPMI' WHEN i.type = 4 THEN 'JMX' ELSE 'Unknown' END AS agent_type, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status, hv.value AS agent_version FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid JOIN items it ON h.hostid = it.hostid JOIN history_text hv ON it.itemid = hv.itemid WHERE it.key_ = 'agent.version' ORDER BY h.hostid, i.interfaceid;
-
-
-SELECT h.host AS hostname, i.ip AS ip_address, CASE WHEN i.type = 1 THEN 'Agent' ELSE 'Unknown' END AS agent_type, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status, hv.value AS agent_version FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN items it ON h.hostid = it.hostid JOIN history_text hv ON it.itemid = hv.itemid WHERE i.type = 1 AND it.key_ = 'agent.version' ORDER BY h.hostid, i.interfaceid;
+SELECT DISTINCT h.host AS hostname, i.ip AS ip_address, 'Agent' AS agent_type, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status, hv.value AS agent_version FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN items it ON h.hostid = it.hostid JOIN history_text hv ON it.itemid = hv.itemid JOIN (SELECT itemid, MAX(clock) AS max_clock FROM history_text WHERE key_ = 'agent.version' GROUP BY itemid) hv_max ON hv.itemid = hv_max.itemid AND hv.clock = hv_max.max_clock WHERE i.type = 1 AND it.key_ = 'agent.version' ORDER BY h.hostid, i.interfaceid;
