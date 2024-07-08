@@ -12,3 +12,8 @@ SELECT h.host AS hostname, g.name AS host_group, COALESCE(t.name, 'No Template')
 
 
 SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, 'Agent' AS agent_type, i.version AS agent_version, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid WHERE i.type = 1 ORDER BY h.hostid, i.interfaceid;
+
+
+
+SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, 'Agent' AS agent_type, i.version AS agent_version, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid WHERE i.type = 1 ORDER BY h.hostid, i.interfaceid;
+ERROR 1054 (42S22): Unknown column 'i.version' in 'field list'
