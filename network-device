@@ -15,5 +15,4 @@ SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, 'Agent' AS 
 
 
 
-SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, 'Agent' AS agent_type, i.version AS agent_version, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid WHERE i.type = 1 ORDER BY h.hostid, i.interfaceid;
-ERROR 1054 (42S22): Unknown column 'i.version' in 'field list'
+SELECT h.host AS hostname, i.ip AS ip_address, g.name AS host_group, 'Agent' AS agent_type, MAX(CASE WHEN item.key_ = 'agent.version' THEN item.value END) AS agent_version, CASE WHEN h.status = 0 THEN 'Enabled' ELSE 'Disabled' END AS host_status FROM hosts h JOIN interface i ON h.hostid = i.hostid JOIN hosts_groups hg ON h.hostid = hg.hostid JOIN hstgrp g ON hg.groupid = g.groupid JOIN items item ON h.hostid = item.hostid WHERE i.type = 1 GROUP BY h.host, i.ip, g.name, h.status ORDER BY h.hostid;
