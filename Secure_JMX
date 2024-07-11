@@ -1,24 +1,49 @@
-1]Generate SSL Certificates
+Generate a Private Key
+openssl genpkey -algorithm RSA -out jmxssl.key -aes256
 
-keytool -genkey -alias jmxssl -keyalg RSA -keystore jmxssl.keystore
+
+Generate a Certificate Signing Request (CSR)
+openssl req -new -key jmxssl.key -out jmxssl.csr
+
+Generate a Self-Signed Certificate
+openssl x509 -req -days 365 -in jmxssl.csr -signkey jmxssl.key -out jmxssl.crt
+
+Generate a CA Certificate
+Generate the CA private key:
+openssl genpkey -algorithm RSA -out ca.key -aes256
+
+Generate the CA certificate:
+openssl req -new -x509 -days 365 -key ca.key -out ca.crt
 
 
-2]Edit WebLogic Server Start Script
+Sign the client certificate with the CA certificate
+openssl x509 -req -days 365 -in jmxssl.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out jmxssl.crt
+
+
+5] Convert PEM Files to PKCS12 Format
+openssl pkcs12 -export -in jmxssl.crt -inkey jmxssl.key -out jmxssl.p12 -name jmxssl -CAfile ca.crt -caname root -password pass:changeit
+
+6]Import PKCS12 into a Java Keystore
+keytool -importkeystore -deststorepass changeit -destkeypass changeit -destkeystore jmxssl.keystore -srckeystore jmxssl.p12 -srcstoretype PKCS12 -srcstorepass changeit -alias jmxssl
+
+Verify the Keystore
+keytool -list -v -keystore jmxssl.keystore -storepass changeit
+
 
 JAVA_OPTIONS="${JAVA_OPTIONS} \
 -Dcom.sun.management.jmxremote \
 -Dcom.sun.management.jmxremote.port=9001 \
 -Dcom.sun.management.jmxremote.ssl=true \
 -Dcom.sun.management.jmxremote.ssl.need.client.auth=true \
--Dcom.sun.management.jmxremote.registry.ssl=true \
 -Djavax.net.ssl.keyStore=/path/to/jmxssl.keystore \
--Djavax.net.ssl.keyStorePassword=your_keystore_password \
+-Djavax.net.ssl.keyStorePassword=changeit \
 -Djavax.net.ssl.trustStore=/path/to/jmxssl.keystore \
--Djavax.net.ssl.trustStorePassword=your_keystore_password \
+-Djavax.net.ssl.trustStorePassword=changeit \
 -Dcom.sun.management.jmxremote.authenticate=true \
 -Dcom.sun.management.jmxremote.password.file=/path/to/jmxremote.password \
 -Dcom.sun.management.jmxremote.access.file=/path/to/jmxremote.access"
 export JAVA_OPTIONS
+
 
 3] Create the jmxremote.password file to define usernames and passwords
 jmxremote.password
@@ -37,12 +62,18 @@ chmod 600 /path/to/jmxremote.password
 chmod 600 /path/to/jmxremote.access
 
 
-Configure Zabbix for SSL and 
-Edit the Zabbix Java Gateway configuration file, typically located at /etc/zabbix/zabbix_java_gateway.conf, to include SSL and authentication details:
+
+Edit Zabbix Java Gateway Configuration
 
 SERVER_TLS_CONNECT=cert
-SERVER_CERTIFICATE_FILE=/path/to/client_cert.pem
-SERVER_CERTIFICATE_KEY_FILE=/path/to/client_key.pem
-SERVER_CERTIFICATE_CA_FILE=/path/to/ca_cert.pem
+SERVER_CERTIFICATE_FILE=/path/to/jmxssl.crt
+SERVER_CERTIFICATE_KEY_FILE=/path/to/jmxssl.key
+SERVER_CERTIFICATE_CA_FILE=/path/to/ca.crt
 
+
+chmod 600 /path/to/jmxssl.crt
+chmod 600 /path/to/jmxssl.key
+chmod 600 /path/to/ca.crt
+
+sudo systemctl restart zabbix-java-gateway
 
