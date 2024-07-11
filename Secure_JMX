@@ -1,0 +1,48 @@
+1]Generate SSL Certificates
+
+keytool -genkey -alias jmxssl -keyalg RSA -keystore jmxssl.keystore
+
+
+2]Edit WebLogic Server Start Script
+
+JAVA_OPTIONS="${JAVA_OPTIONS} \
+-Dcom.sun.management.jmxremote \
+-Dcom.sun.management.jmxremote.port=9001 \
+-Dcom.sun.management.jmxremote.ssl=true \
+-Dcom.sun.management.jmxremote.ssl.need.client.auth=true \
+-Dcom.sun.management.jmxremote.registry.ssl=true \
+-Djavax.net.ssl.keyStore=/path/to/jmxssl.keystore \
+-Djavax.net.ssl.keyStorePassword=your_keystore_password \
+-Djavax.net.ssl.trustStore=/path/to/jmxssl.keystore \
+-Djavax.net.ssl.trustStorePassword=your_keystore_password \
+-Dcom.sun.management.jmxremote.authenticate=true \
+-Dcom.sun.management.jmxremote.password.file=/path/to/jmxremote.password \
+-Dcom.sun.management.jmxremote.access.file=/path/to/jmxremote.access"
+export JAVA_OPTIONS
+
+3] Create the jmxremote.password file to define usernames and passwords
+jmxremote.password
+
+monitorRole monitorPassword
+controlRole controlPassword
+
+
+4]Create the jmxremote.access file to define roles and access levels:
+jmxremote.access
+monitorRole readonly
+controlRole readwrite
+
+
+chmod 600 /path/to/jmxremote.password
+chmod 600 /path/to/jmxremote.access
+
+
+Configure Zabbix for SSL and 
+Edit the Zabbix Java Gateway configuration file, typically located at /etc/zabbix/zabbix_java_gateway.conf, to include SSL and authentication details:
+
+SERVER_TLS_CONNECT=cert
+SERVER_CERTIFICATE_FILE=/path/to/client_cert.pem
+SERVER_CERTIFICATE_KEY_FILE=/path/to/client_key.pem
+SERVER_CERTIFICATE_CA_FILE=/path/to/ca_cert.pem
+
+
