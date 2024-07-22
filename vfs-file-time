@@ -1,3 +1,6 @@
 vfs.file.time[C:\Program Files (x86)\Websense\Web Security\webroot\Explorer\fop\conf\config.xml,modify]
 
   1650590183
+
+
+{MyHost:vfs.file.time[C:\Program Files (x86)\Websense\Web Security\webroot\Explorer\fop\conf\config.xml,modify].now()} - {MyHost:vfs.file.time[C:\Program Files (x86)\Websense\Web Security\webroot\Explorer\fop\conf\config.xml,modify].last()} < 3600
