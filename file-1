@@ -1,3 +1,6 @@
+EnableRemoteCommands=1
+
+
 #!/bin/bash
 
 # Citrix API URL and credentials
