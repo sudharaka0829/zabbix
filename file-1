@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Citrix API URL and credentials
+citrix_url='https://citrix.example.com/api'
+username='your_username'
+password='your_password'
+
+# Authenticate and get the token
+response=$(curl -s -X POST "$citrix_url/login" -d "username=$username&password=$password")
+token=$(echo $response | jq -r '.token')
+
+# Check if token is retrieved successfully
+if [ -z "$token" ]; then
+  echo "Error: Failed to authenticate"
+  exit 1
+fi
+
+# Get the number of active sessions
+active_sessions_response=$(curl -s -X GET "$citrix_url/sessions/active" -H "Authorization: Bearer $token")
+active_sessions=$(echo $active_sessions_response | jq -r '.count')
+
+# Get the number of connected sessions
+connected_sessions_response=$(curl -s -X GET "$citrix_url/sessions/connected" -H "Authorization: Bearer $token")
+connected_sessions=$(echo $connected_sessions_response | jq -r '.count')
+
+# Print the metrics
+echo "Active Sessions: $active_sessions"
+echo "Connected Sessions: $connected_sessions"
