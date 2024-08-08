@@ -54,3 +54,7 @@ jmx["java.lang:type=Threading", "ThreadCount"]
 
 Garbage Collection Count (for each GC):
 jmx["java.lang:name=G1 Young Generation,type=GarbageCollector", "CollectionCount"]
+
+
+
+jconsole service:jmx:rmi:///jndi/rmi://184.127.1.29:9990/jmxrmi
