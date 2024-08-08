@@ -29,6 +29,13 @@ echo '{"data":[{"{#JMXOBJ}":"jboss.as:subsystem=undertow,server=default-server,h
 
 zabbix_java_gateway_get.sh:
 
+#!/bin/bash
+HOST=$1
+ITEM=$2
+JMX_PORT=9999
+JAVA_HOME=/usr/java/latest
+$JAVA_HOME/bin/jcmd -J-Dcom.sun.management.jmxremote -J-Dcom.sun.management.jmxremote.port=$JMX_PORT -J-Dcom.sun.management.jmxremote.authenticate=false -J-Dcom.sun.management.jmxremote.ssl=false $ITEM
+
 
 chmod +x /etc/zabbix/zabbix_java_gateway_discovery.sh
 chmod +x /etc/zabbix/zabbix_java_gateway_get.sh
