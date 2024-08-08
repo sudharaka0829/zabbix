@@ -1,1 +1,49 @@
 Unsupported or unrecognized SSL message: service:jmx:rmi:///jndi/rmi://184.127.1.29:9990/jmxrmi
+
+
+Ensure JBoss is configured to expose JMX metrics. Add the following JVM options to your JBoss startup script to enable JMX:
+
+-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=9999
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.ssl=false
+
+
+/etc/zabbix/zabbix_agentd.conf
+
+
+# Enable JMX
+EnableRemoteCommands=1
+LogRemoteCommands=1
+
+# Define JMX item
+UserParameter=jmx.discovery[*],zabbix_java_gateway_discovery.sh "$1"
+UserParameter=jmx.get[*],zabbix_java_gateway_get.sh "$1" "$2"
+
+
+zabbix_java_gateway_discovery.sh:
+#!/bin/bash
+echo '{"data":[{"{#JMXOBJ}":"jboss.as:subsystem=undertow,server=default-server,http-listener=default"},{"{#JMXOBJ}":"jboss.as:subsystem=datasources,data-source=ExampleDS"}]}'
+
+
+
+zabbix_java_gateway_get.sh:
+
+
+chmod +x /etc/zabbix/zabbix_java_gateway_discovery.sh
+chmod +x /etc/zabbix/zabbix_java_gateway_get.sh
+
+
+Heap Memory Usage
+jmx["java.lang:type=Memory", "HeapMemoryUsage.used"]
+
+Non-Heap Memory Usage
+jmx["java.lang:type=Memory", "NonHeapMemoryUsage.used"]
+
+
+Thread Count
+jmx["java.lang:type=Threading", "ThreadCount"]
+
+
+Garbage Collection Count (for each GC):
+jmx["java.lang:name=G1 Young Generation,type=GarbageCollector", "CollectionCount"]
