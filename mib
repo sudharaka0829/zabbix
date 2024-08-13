@@ -16,16 +16,15 @@ DISMAN-EVENT-MIB::mteEventNotification."snmpd.conf".'sysLdTrpCr' = OID: WBSN-APP
 
 
 
-
 #!/bin/bash
 
 # Output XML file
 output_file="zabbix_template.xml"
 
-# Initialize the XML template
+# Initialize the XML template for Zabbix 5
 cat << EOF > $output_file
 <zabbix_export>
-    <version>6.0</version>
+    <version>5.0</version>
     <templates>
         <template>
             <template>Template_SNMP_Automated</template>
