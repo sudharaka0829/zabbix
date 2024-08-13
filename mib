@@ -71,3 +71,11 @@ cat << EOF >> $output_file
 EOF
 
 echo "Zabbix template created: $output_file"
+
+
+
+
+
+
+
+Invalid tag "/zabbix_export/version": unsupported version number. [conf.import.php:89 → CApiWrapper->__call() → CFrontendApiWrapper->callMethod() → CApiWrapper->callMethod() → CFrontendApiWrapper->callClientMethod() → CLocalApiClient->callMethod() → CConfiguration->import() → CXmlValidator->validate() in include/classes/api/services/CConfiguration.php:156]
