@@ -13,3 +13,61 @@ DISMAN-EVENT-MIB::mteEventNotification."snmpd.conf".'raidStTrp' = OID: WBSN-APPL
 DISMAN-EVENT-MIB::mteEventNotification."snmpd.conf".'raidStTrpCr' = OID: WBSN-APPLIANCE-MIB::raidClear
 DISMAN-EVENT-MIB::mteEventNotification."snmpd.conf".'sysLdTrp' = OID: WBSN-APPLIANCE-MIB::systemLoad
 DISMAN-EVENT-MIB::mteEventNotification."snmpd.conf".'sysLdTrpCr' = OID: WBSN-APPLIANCE-MIB::systemLoadClear
+
+
+
+
+#!/bin/bash
+
+# Output XML file
+output_file="zabbix_template.xml"
+
+# Initialize the XML template
+cat << EOF > $output_file
+<zabbix_export>
+    <version>6.0</version>
+    <templates>
+        <template>
+            <template>Template_SNMP_Automated</template>
+            <name>Template_SNMP_Automated</name>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+            </groups>
+            <items>
+EOF
+
+# Read and process each line from the filtered snmpwalk output
+while IFS= read -r line; do
+    # Extract the item name and OID
+    item_name=$(echo "$line" | awk -F '=' '{print $1}' | tr -d ' ' | sed 's/["'\'']/_/g')
+    oid=$(echo "$line" | awk -F 'OID: ' '{print $2}' | tr -d ' ')
+
+    # Add item to the XML template
+    cat << EOF >> $output_file
+                <item>
+                    <name>$item_name</name>
+                    <type>2</type>
+                    <snmp_community>{$SNMP_COMMUNITY}</snmp_community>
+                    <snmp_oid>$oid</snmp_oid>
+                    <key_>$item_name</key_>
+                    <delay>30s</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>3</value_type>
+                </item>
+EOF
+
+done < filtered_oids.txt
+
+# Close the XML template
+cat << EOF >> $output_file
+            </items>
+        </template>
+    </templates>
+</zabbix_export>
+EOF
+
+echo "Zabbix template created: $output_file"
