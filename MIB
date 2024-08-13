@@ -111,3 +111,30 @@ cat <<EOF >> "$OUTPUT_FILE"
 EOF
 
 echo "Zabbix template XML generated: $OUTPUT_FILE"
+
+
+
+
+#!/bin/bash
+
+# File containing the snmpwalk output
+SNMPWALK_FILE="device_snmp_oids.txt"
+
+# Function to extract unique OIDs
+extract_oids() {
+  awk '/^([0-9]+\.[0-9.]+)/ {print $1}' "$SNMPWALK_FILE" | sort | uniq
+}
+
+# Check if the snmpwalk file exists
+if [[ ! -f $SNMPWALK_FILE ]]; then
+  echo "SNMP walk file not found: $SNMPWALK_FILE"
+  exit 1
+fi
+
+# Extract and print all unique OIDs
+unique_oids=$(extract_oids)
+num_oids=$(echo "$unique_oids" | wc -l)
+
+# Output results
+echo "Total unique OIDs found: $num_oids"
+echo "$unique_oids"
