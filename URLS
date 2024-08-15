@@ -1,36 +1,30 @@
-Config Weblogic with Zabbix
-https://sath.com/blog/weblogic-monitoring-zabbix-jmx/
+In Zabbix, when monitoring a Cisco device using SNMP, the **generic Zabbix key** refers to the metric you are trying to monitor, and the **OID (Object Identifier)** is the specific identifier used by SNMP to access that data.
 
- 
-1] Servers not in Zabbix based on the inventory provided. (Windows, Unix, NW) . Bi-weekly report.
-  Need to cross-check the Windows/ Linux/ Network inventories with Zabbix production environment.
-  
-  Linux -> 600 server analysis has been done, Moving with windows servers. 
-      
-2] JVM Monitoring 
-  Need to check the JAVA gateway status in Zabbix UAT server.
-  WebLogic Monitoring Using JVM has been done and moving with JBOSS , WebSphere and need to check the items which are not working. 
-    
-3] DB2 monitoring
-  DB2Bix integration with DB2
-  Need to do more R&D with the DB2, DBForBix, Zabbix configurations. 
-  
-4] Need to check the status of top five process in windows and Linux environments.
-  we can do it using two methods. 
-  1] using shell script on each server | This has been done 
-  2] run Zabbix item key system.run[] and retrive data, checking the feasibility on it. 
-  
- Commands ->
-  windows : system.run[powershell -Command "Get-Process | Sort-Object PM -Descending | Select-Object -First 5 | Format-Table -Property Id, ProcessName, CPU, PM -AutoSize"]
-  Linux : system.run[ps -eo pid,comm,%cpu,%mem --sort=-%cpu | head -n 6,nowait]
- 
-5] Log monitoring problem alerts clearing
-  Need to clear problem alerts in 25 hours related to log monitoring.   
-  we can use expression nodata()     
-               
-6] Need to check Zabbix auto registration using metadata. 
-    Initial analysis has been done and need to config it with Zabbix 7 
-       
-7]  Base Zabbix templates check for Linux / windows to identify the enhancements
- 
- 8] Need to check the suitable agent version for Zabbix 7   
+Here are a few examples of generic Zabbix keys and OIDs for Cisco devices:
+
+### 1. **CPU Utilization**
+- **Zabbix Key:** `snmp[".1.3.6.1.4.1.9.2.1.57.0"]`
+- **OID:** `.1.3.6.1.4.1.9.2.1.57.0`
+- **Description:** Retrieves the CPU utilization percentage.
+
+### 2. **Memory Utilization**
+- **Zabbix Key:** `snmp[".1.3.6.1.4.1.9.2.1.8.0"]`
+- **OID:** `.1.3.6.1.4.1.9.2.1.8.0`
+- **Description:** Retrieves the memory utilization percentage.
+
+### 3. **Interface Traffic**
+- **Zabbix Key:** `snmp["ifInOctets.{ifIndex}"]` and `snmp["ifOutOctets.{ifIndex}"]`
+- **OID:** `.1.3.6.1.2.1.2.2.1.10.{ifIndex}` for inbound traffic and `.1.3.6.1.2.1.2.2.1.16.{ifIndex}` for outbound traffic.
+- **Description:** Retrieves the incoming and outgoing octets (bytes) for a network interface. `{ifIndex}` should be replaced by the specific interface index number.
+
+### 4. **Uptime**
+- **Zabbix Key:** `snmp[".1.3.6.1.2.1.1.3.0"]`
+- **OID:** `.1.3.6.1.2.1.1.3.0`
+- **Description:** Retrieves the system uptime.
+
+### 5. **Temperature Monitoring**
+- **Zabbix Key:** `snmp[".1.3.6.1.4.1.9.9.13.1.3.1.3"]`
+- **OID:** `.1.3.6.1.4.1.9.9.13.1.3.1.3`
+- **Description:** Retrieves the temperature from the environmental sensors.
+
+These are standard examples, but the exact OIDs might vary depending on the Cisco model. You can use tools like the Cisco SNMP Object Navigator or Zabbix SNMP discovery to find specific OIDs for your device.
