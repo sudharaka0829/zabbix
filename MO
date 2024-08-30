@@ -1,1 +1,1 @@
-UserParameter=usercma,lsof -u temenos | awk '{print $$1}'
+UserParameter=usercma,sh -c "lsof -u temenos | wc -l"
