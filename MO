@@ -1,1 +1,5 @@
 UserParameter=usercma,sh -c "lsof -u temenos | wc -l"
+
+
+
+2024-08-30 16:29:22 164 [Warning] Aborted connection 164 to db: 'zabbix_fulldump' user: 'zabbix' host: '184.127.0.214' (Got an error reading communication packets)
