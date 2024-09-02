@@ -1,0 +1,33 @@
+jstat: Monitor JVM statistics like garbage collection, class loading, and heap memory.
+jstat -gc <JBoss_PID>
+
+jstack: Obtain a stack trace of threads running in the JVM.
+jstack <JBoss_PID>
+
+jmap: Monitor heap memory usage and take heap dumps.
+jmap -heap <JBoss_PID>
+
+jcmd: Perform various tasks like garbage collection, thread dump, or getting JVM command-line options.
+jcmd <JBoss_PID> GC.run
+jcmd <JBoss_PID> VM.system_properties
+jcmd <JBoss_PID> Thread.print
+
+top: Monitor CPU, memory usage, and other system metrics for JBoss.
+top -p <JBoss_PID>
+
+ps: Display information about the JBoss process.
+ps aux | grep <JBoss_PID>
+
+lsof: List open files and network connections used by JBoss.
+lsof -p <JBoss_PID>
+
+pmap: Display the memory map of the JBoss process.
+pmap -x <JBoss_PID>
+
+JBoss CLI (jboss-cli.sh): Use JBoss Command Line Interface (CLI) to interact with and monitor the server.
+./jboss-cli.sh --connect --command=":read-resource(recursive=true)"
+
+
+./jboss-cli.sh --connect --command="/core-service=platform-mbean/type=runtime:read-attribute(name=uptime)"
+
+./jboss-cli.sh --connect --command="/subsystem=datasources/data-source=<DataSourceName>:read-resource(include-runtime=true)"
