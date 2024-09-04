@@ -73,3 +73,23 @@ main() {
 
 # Run the script
 main
+
+
+
+
+
+
+
+
+
+
+
+
+
+        SELECT i.itemid, i.name, i.delay FROM items i JOIN history_uint h ON i.itemid = h.itemid WHERE h.clock > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 HOUR)) ORDER BY i.delay DESC;
+
+
+SELECT i.itemid, i.name, i.delay FROM items i JOIN history_uint h ON i.itemid = h.itemid WHERE h.clock > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 HOUR)) AND i.delay < 60 ORDER BY i.delay ASC;
+
+
+SELECT t.clock, t.value_avg FROM trends t JOIN items i ON t.itemid = i.itemid WHERE i.key_ LIKE 'zabbix[process,poller,queue]' ORDER BY t.clock DESC;
