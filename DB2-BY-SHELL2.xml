@@ -99,5 +99,10 @@ SELECT i.itemid, i.name AS item_name, i.delay, h.host AS hostname FROM items i J
 SELECT i.itemid, i.name AS item_name, i.delay, h.host AS hostname FROM items i JOIN history_uint hu ON i.itemid = hu.itemid JOIN hosts h ON i.hostid = h.hostid WHERE hu.clock > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 HOUR)) AND i.delay < 60 ORDER BY i.delay ASC;
 SELECT t.clock, t.value_avg, h.host AS hostname FROM trends t JOIN items i ON t.itemid = i.itemid JOIN hosts h ON i.hostid = h.hostid WHERE i.key_ LIKE 'zabbix[process,poller,queue]' ORDER BY t.clock DESC;
 
-
-    
+SELECT i.itemid, i.name AS item_name, i.delay, h.host AS hostname, MAX(hu.clock - hu.clock) AS execution_time
+FROM items i
+JOIN history_uint hu ON i.itemid = hu.itemid
+JOIN hosts h ON i.hostid = h.hostid
+WHERE hu.clock > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 HOUR))
+GROUP BY i.itemid, h.host
+ORDER BY execution_time DESC;
