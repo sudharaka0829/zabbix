@@ -1,8 +1,7 @@
-C&show_suppressed=0&action=host.view
-[Wed Sep 04 20:57:37.083592 2024] [proxy_fcgi:error] [pid 663468:tid 663501] (70007)The timeout specified has expired: [client 184.124.73.66:52188] AH01075: Error dispatching request to : (polling), referer: http://184.127.0.162/zabbix/zabbix.php?action=dashboard.view&dashboardid=1
-[Wed Sep 04 21:01:10.317501 2024] [proxy_fcgi:error] [pid 663107:tid 663232] (70007)The timeout specified has expired: [client 184.124.73.66:52401] AH01075: Error dispatching request to : (polling), referer: http://184.127.0.162/zabbix/zabbix.php?action=dashboard.view&dashboardid=1
-[Wed Sep 04 21:06:14.101103 2024] [proxy_fcgi:error] [pid 663106:tid 663236] (70007)The timeout specified has expired: [client 184.124.73.66:52582] AH01075: Error dispatching request to : (polling), referer: http://184.127.0.162/zabbix/zabbix.php?action=dashboard.view&dashboardid=1
-[Wed Sep 04 21:10:46.398671 2024] [proxy_fcgi:error] [pid 663106:tid 663248] (70007)The timeout specified has expired: [client 184.124.73.66:52748] AH01075: Error dispatching request to : (polling), referer: http://184.127.0.162/zabbix/zabbix.php?action=dashboard.view&dashboardid=1
-
-
-
+SELECT i.itemid, i.name AS item_name, i.delay, h.host AS hostname, COUNT(hu.itemid) AS updates_last_five_minutes
+FROM items i
+JOIN history_uint hu ON i.itemid = hu.itemid
+JOIN hosts h ON i.hostid = h.hostid
+WHERE hu.clock > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 5 MINUTE))
+GROUP BY i.itemid, h.host
+ORDER BY i.delay ASC, updates_last_five_minutes DESC;
