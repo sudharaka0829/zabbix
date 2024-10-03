@@ -54,3 +54,10 @@ GROUP BY i.itemid, i.delay
 HAVING polls_count > (1800 / i.delay)  -- More polls than expected for the interval (e.g., >60 for 30s interval)
 ORDER BY polls_count DESC
 LIMIT 50;
+
+
+Explanation:
+
+	•	i.delay: The polling interval for the item. Items with short intervals (e.g., <30 seconds) are typically more demanding.
+	•	polls_count: The number of times an item has been polled within the specified time period.
+	•	data_points: The number of history entries created by an item during the time period, which helps identify items causing a load.
