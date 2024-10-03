@@ -1,62 +1,16 @@
-bb
+short interval , less than 30 sesonds
 
-SELECT i.itemid, i.key_, i.name, h.host, i.lastclock, i.type, i.status
-FROM items i
-JOIN hosts h ON i.hostid = h.hostid
-WHERE i.lastclock BETWEEN UNIX_TIMESTAMP('2024-10-02 12:00:00') AND UNIX_TIMESTAMP('2024-10-02 12:30:00')
-AND i.status = 0  -- 0 means the item is enabled
-ORDER BY i.lastclock DESC;
+SELECT i.itemid, i.key_, i.name, h.host, i.delay, COUNT(hi.clock) AS data_points FROM items i JOIN hosts h ON i.hostid = h.hostid LEFT JOIN history hi ON i.itemid = hi.itemid WHERE i.delay < 30 AND hi.clock BETWEEN UNIX_TIMESTAMP('2024-10-02 12:00:00') AND UNIX_TIMESTAMP('2024-10-02 12:30:00') AND i.status = 0 GROUP BY i.itemid ORDER BY data_points DESC LIMIT 50;
 
+most data points (history entries)
 
-SELECT i.itemid, i.key_, i.name, h.host, hi.clock, hi.value
-FROM history hi
-JOIN items i ON hi.itemid = i.itemid
-JOIN hosts h ON i.hostid = h.hostid
-WHERE hi.clock BETWEEN UNIX_TIMESTAMP('2024-10-02 12:00:00') AND UNIX_TIMESTAMP('2024-10-02 12:30:00')
-ORDER BY hi.clock DESC;
+SELECT i.itemid, i.key_, i.name, h.host, COUNT(hi.clock) AS data_points FROM items i JOIN hosts h ON i.hostid = h.hostid LEFT JOIN history hi ON i.itemid = hi.itemid WHERE hi.clock BETWEEN UNIX_TIMESTAMP('2024-10-02 12:00:00') AND UNIX_TIMESTAMP('2024-10-02 12:30:00') AND i.status = 0  GROUP BY i.itemid ORDER BY data_points DESC LIMIT 50;
 
+Item polling multiple times within short period 
+SELECT i.itemid, i.key_, i.name, h.host, i.delay, COUNT(hi.clock) AS polls_count FROM items i JOIN hosts h ON i.hostid = h.hostid LEFT JOIN history hi ON i.itemid = hi.itemid WHERE hi.clock BETWEEN UNIX_TIMESTAMP('2024-10-02 12:00:00') AND UNIX_TIMESTAMP('2024-10-02 12:30:00') AND i.status = 0 GROUP BY i.itemid, i.delay HAVING polls_count > (1800 / i.delay)  ORDER BY polls_count DESC LIMIT 50;
 
-SELECT i.itemid, i.key_, i.name, h.host, hu.clock, hu.value
-FROM history_uint hu
-JOIN items i ON hu.itemid = i.itemid
-JOIN hosts h ON i.hostid = h.hostid
-WHERE hu.clock BETWEEN UNIX_TIMESTAMP('2024-10-02 12:00:00') AND UNIX_TIMESTAMP('2024-10-02 12:30:00')
-ORDER BY hu.clock DESC;
-
-SELECT i.itemid, i.key_, i.name, h.host, i.delay, COUNT(hi.clock) AS data_points
-FROM items i
-JOIN hosts h ON i.hostid = h.hostid
-LEFT JOIN history hi ON i.itemid = hi.itemid
-WHERE i.delay < 30  -- Items polled every 30 seconds or less
-AND hi.clock BETWEEN UNIX_TIMESTAMP('2024-10-02 12:00:00') AND UNIX_TIMESTAMP('2024-10-02 12:30:00')
-AND i.status = 0  -- Only enabled items
-GROUP BY i.itemid
-ORDER BY data_points DESC
-LIMIT 50;
-
-SELECT i.itemid, i.key_, i.name, h.host, COUNT(hi.clock) AS data_points
-FROM items i
-JOIN hosts h ON i.hostid = h.hostid
-LEFT JOIN history hi ON i.itemid = hi.itemid
-WHERE hi.clock BETWEEN UNIX_TIMESTAMP('2024-10-02 12:00:00') AND UNIX_TIMESTAMP('2024-10-02 12:30:00')
-AND i.status = 0  -- Only enabled items
-GROUP BY i.itemid
-ORDER BY data_points DESC
-LIMIT 50;
-
-SELECT i.itemid, i.key_, i.name, h.host, i.delay, COUNT(hi.clock) AS polls_count
-FROM items i
-JOIN hosts h ON i.hostid = h.hostid
-LEFT JOIN history hi ON i.itemid = hi.itemid
-WHERE hi.clock BETWEEN UNIX_TIMESTAMP('2024-10-02 12:00:00') AND UNIX_TIMESTAMP('2024-10-02 12:30:00')
-AND i.status = 0  -- Only enabled items
-GROUP BY i.itemid, i.delay
-HAVING polls_count > (1800 / i.delay)  -- More polls than expected for the interval (e.g., >60 for 30s interval)
-ORDER BY polls_count DESC
-LIMIT 50;
-
-
-Explanation:
+working
+SELECT i.itemid, i.key_, i.name, h.host, i.delay, COUNT(hi.clock) AS polls_count FROM items i JOIN hosts h ON i.hostid = h.hostid LEFT JOIN history hi ON i.itemid = hi.itemid WHERE hi.clock BETWEEN UNIX_TIMESTAMP('2024-09-28 22:00:00') AND UNIX_TIMESTAMP('2024-09-29 01:00:00') AND i.status = 0 GROUP BY i.itemid, i.delay HAVING polls_count > (1800 / i.delay)  ORDER BY polls_count DESC LIMIT 1000;
 
 	•	i.delay: The polling interval for the item. Items with short intervals (e.g., <30 seconds) are typically more demanding.
 	•	polls_count: The number of times an item has been polled within the specified time period.
