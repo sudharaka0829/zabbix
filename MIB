@@ -1,46 +1,8 @@
-#!/bin/bash
+bb
 
-# Define variables
-COMMUNITY_STRING="<community_string>"
-DEVICE_IP="<device_ip>"
-OUTPUT_FILE="snmp_output.txt"
-
-# Run snmpwalk and save output to file
-snmpwalk -v2c -c $COMMUNITY_STRING $DEVICE_IP -p 161 > $OUTPUT_FILE
-
-# Extract system information
-echo "System Information:"
-grep -A 10 ".1.3.6.1.2.1.1" $OUTPUT_FILE
-
-# Extract network interfaces
-echo "Network Interfaces:"
-grep -E ".1.3.6.1.2.1.2.2.1.2|.1.3.6.1.2.1.2.2.1.8" $OUTPUT_FILE
-
-# Extract CPU usage (if known OID, e.g., example OID for CPU)
-echo "CPU Usage:"
-grep -E ".1.3.6.1.4.1.<vendor-specific-OID>" $OUTPUT_FILE
-
-# Extract Memory usage (if known OID, e.g., example OID for memory)
-echo "Memory Usage:"
-grep -E ".1.3.6.1.4.1.<vendor-specific-OID>" $OUTPUT_FILE
-
-# Optional: List unique OIDs found in the output
-echo "Unique OIDs:"
-awk '{print $1}' $OUTPUT_FILE | sort | uniq
-
-# Optional: Create a summary file with key data
-SUMMARY_FILE="snmp_summary.txt"
-echo "Creating summary file: $SUMMARY_FILE"
-echo "System Information:" > $SUMMARY_FILE
-grep -A 10 ".1.3.6.1.2.1.1" $OUTPUT_FILE >> $SUMMARY_FILE
-
-echo "Network Interfaces:" >> $SUMMARY_FILE
-grep -E ".1.3.6.1.2.1.2.2.1.2|.1.3.6.1.2.1.2.2.1.8" $OUTPUT_FILE >> $SUMMARY_FILE
-
-echo "CPU Usage:" >> $SUMMARY_FILE
-grep -E ".1.3.6.1.4.1.<vendor-specific-OID>" $OUTPUT_FILE >> $SUMMARY_FILE
-
-echo "Memory Usage:" >> $SUMMARY_FILE
-grep -E ".1.3.6.1.4.1.<vendor-specific-OID>" $OUTPUT_FILE >> $SUMMARY_FILE
-
-echo "Summary file created: $SUMMARY_FILE"
+SELECT i.itemid, i.key_, i.name, h.host, i.lastclock, i.type, i.status
+FROM items i
+JOIN hosts h ON i.hostid = h.hostid
+WHERE i.lastclock BETWEEN UNIX_TIMESTAMP('2024-10-02 12:00:00') AND UNIX_TIMESTAMP('2024-10-02 12:30:00')
+AND i.status = 0  -- 0 means the item is enabled
+ORDER BY i.lastclock DESC;
