@@ -15,3 +15,64 @@ SELECT i.itemid, i.key_, i.name, h.host, i.delay, COUNT(hi.clock) AS polls_count
 	•	i.delay: The polling interval for the item. Items with short intervals (e.g., <30 seconds) are typically more demanding.
 	•	polls_count: The number of times an item has been polled within the specified time period.
 	•	data_points: The number of history entries created by an item during the time period, which helps identify items causing a load.
+
+
+SELECT
+    FROM_UNIXTIME(clock) AS time,
+    value AS delay
+FROM history
+JOIN items ON items.itemid = history.itemid
+WHERE items.key_ = 'zabbix[process,poller,delay]'
+AND FROM_UNIXTIME(clock) >= NOW() - INTERVAL 1 DAY
+ORDER BY clock DESC;
+
+
+
+SELECT
+    FROM_UNIXTIME(clock) AS time,
+    value AS utilization
+FROM history
+JOIN items ON items.itemid = history.itemid
+WHERE items.key_ = 'zabbix[process,poller,avg,busy]'
+AND FROM_UNIXTIME(clock) >= NOW() - INTERVAL 1 DAY
+ORDER BY clock DESC;
+
+
+SELECT
+    FROM_UNIXTIME(clock) AS time,
+    value AS queue_size
+FROM history
+JOIN items ON items.itemid = history.itemid
+WHERE items.key_ = 'zabbix[queue]'
+AND FROM_UNIXTIME(clock) >= NOW() - INTERVAL 1 DAY
+ORDER BY clock DESC;
+
+
+SELECT 
+    hosts.host, 
+    items.name, 
+    items.key_, 
+    history.value AS delay, 
+    FROM_UNIXTIME(history.clock) AS time
+FROM history
+JOIN items ON items.itemid = history.itemid
+JOIN hosts ON items.hostid = hosts.hostid
+WHERE items.key_ = 'zabbix[process,poller,delay]'
+AND history.value > 5  -- Customize this threshold based on your environment
+ORDER BY history.value DESC
+LIMIT 10;
+
+
+SELECT 
+    hosts.host, 
+    items.name, 
+    items.key_, 
+    history.value AS execution_time, 
+    FROM_UNIXTIME(history.clock) AS time
+FROM history
+JOIN items ON items.itemid = history.itemid
+JOIN hosts ON items.hostid = hosts.hostid
+WHERE items.key_ LIKE 'system.cpu.util%'
+AND FROM_UNIXTIME(history.clock) >= NOW() - INTERVAL 1 DAY
+ORDER BY history.value DESC
+LIMIT 10;
