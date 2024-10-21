@@ -30,3 +30,8 @@ SELECT
 FROM hosts h
 JOIN items i ON h.hostid = i.hostid
 WHERE i.key_ = 'agent.version';
+
+
+
+
+SELECT h.host AS 'Hostname', it.ip AS 'IP Address', MAX(x.value) AS 'Agent Version' FROM items i LEFT JOIN hosts h ON i.hostid = h.hostid LEFT JOIN history_str x ON x.itemid = i.itemid LEFT JOIN interface it ON h.hostid = it.hostid WHERE i.key_ = 'agent.version' AND x.value IS NOT NULL; GROUP BY h.host, it.ip;
