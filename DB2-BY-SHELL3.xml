@@ -5,3 +5,14 @@ JOIN items it ON h.hostid = it.hostid
 WHERE i.type = 1              -- Type 1 corresponds to Zabbix agent
 AND it.key_ = 'agent.version' -- Filtering for the agent.version key
 AND it.status = 0;            -- Ensure the item is enabled (status = 0)
+
+
+SELECT h.hostid, 
+       h.name, 
+       COALESCE(it.lastvalue, 'not working') AS agent_version
+FROM hosts h
+JOIN interfaces i ON h.hostid = i.hostid
+JOIN items it ON h.hostid = it.hostid
+WHERE i.type = 1                        -- Type 1 corresponds to Zabbix agent
+AND it.key_ = 'agent.version'           -- Filtering for the agent.version key
+AND it.status = 0;                      -- Ensure the item is enabled (status = 0)
