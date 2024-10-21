@@ -1,7 +1,7 @@
-SELECT i.itemid, i.name AS item_name, i.delay, h.host AS hostname, COUNT(hu.itemid) AS updates_last_five_minutes
-FROM items i
-JOIN history_uint hu ON i.itemid = hu.itemid
-JOIN hosts h ON i.hostid = h.hostid
-WHERE hu.clock > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 5 MINUTE))
-GROUP BY i.itemid, h.host
-ORDER BY i.delay ASC, updates_last_five_minutes DESC;
+SELECT h.hostid, h.name
+FROM hosts h
+JOIN interfaces i ON h.hostid = i.hostid
+JOIN items it ON h.hostid = it.hostid
+WHERE i.type = 1              -- Type 1 corresponds to Zabbix agent
+AND it.key_ = 'agent.version' -- Filtering for the agent.version key
+AND it.status = 0;            -- Ensure the item is enabled (status = 0)
