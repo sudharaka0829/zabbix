@@ -76,3 +76,7 @@ WHERE items.key_ LIKE 'system.cpu.util%'
 AND FROM_UNIXTIME(history.clock) >= NOW() - INTERVAL 1 DAY
 ORDER BY history.value DESC
 LIMIT 10;
+
+
+
+SELECT h.host AS 'Hostname', it.ip AS 'IP Address', MAX(x.value) AS 'Agent Version' FROM items i LEFT JOIN hosts h ON i.hostid = h.hostid LEFT JOIN history_str x ON x.itemid = i.itemid LEFT JOIN interface it ON h.hostid = it.hostid WHERE i.key_ = 'agent.version' AND x.value IS NOT NULL; GROUP BY h.host, it.ip;
