@@ -1,0 +1,14 @@
+# Store all remote syslogs in /var/log/remote/
+if $fromhost-ip != '127.0.0.1' then {
+    action(type="omfile" file="/var/log/remote/%HOSTNAME%/syslog.log")
+}
+
+
+*.* @192.168.32.x:514       # UDP
+*.* @@192.168.32.x:514      # TCP (for more reliable transmission)
+
+
+logger -n 192.168.32.x -P 514 "Test message from client"
+
+
+tail -f /var/log/remote/client_hostname/syslog.log
