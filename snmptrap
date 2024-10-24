@@ -1,4 +1,6 @@
 
+sudo vi /etc/snmp/snmptrapd.conf
+
 
 authCommunity log,execute,net public   # Replace 'public' with your community string
 disableAuthorization yes               # Disables authorization for simplicity
