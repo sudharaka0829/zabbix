@@ -3,3 +3,18 @@
 authCommunity log,execute,net public   # Replace 'public' with your community string
 disableAuthorization yes               # Disables authorization for simplicity
 outputOption s                         # Log to a file in syslog format
+
+
+sudo vi /etc/snmp/snmptrapd.conf
+
+
+sudo vi /etc/sysconfig/snmptrapd.options
+
+OPTIONS="-On -Lf /var/log/snmptrapd.log"
+
+sudo vi /etc/zabbix/zabbix_server.conf
+
+
+StartSNMPTrapper=1
+SNMPTrapperFile=/var/log/snmptrapd.log
+
