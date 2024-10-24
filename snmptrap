@@ -1,0 +1,5 @@
+
+
+authCommunity log,execute,net public   # Replace 'public' with your community string
+disableAuthorization yes               # Disables authorization for simplicity
+outputOption s                         # Log to a file in syslog format
