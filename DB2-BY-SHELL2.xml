@@ -8,3 +8,9 @@ SELECT h.hostid, h.name
 FROM hosts h
 JOIN interfaces i ON h.hostid = i.hostid
 WHERE i.type = 1;  -- Type 1 corresponds to Zabbix agent
+
+
+
+134428:20241024:153237.027 HA manager error: multiple servers have been started without configuring "HANodeName" parameter
+134431:20241024:153237.049 HA manager has been stopped
+134428:20241024:153237.051 Zabbix Server stopped. Zabbix 7.0.5 (revision 9406e67a5ff).
