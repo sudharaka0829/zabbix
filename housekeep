@@ -1,0 +1,1 @@
+UPDATE housekeeper SET lastclock=0 WHERE housekeeperid IN (1, 2, 3);
