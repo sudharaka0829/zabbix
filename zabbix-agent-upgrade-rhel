@@ -20,6 +20,67 @@ echo "[`date`]: Existing config."
 egrep -v "^$|^#" /etc/zabbix/zabbix_agent2.conf
 
 #FOR UAT
+
+------------------------------------------------------------------------------------
+
+
+echo "[`date`]: ########## REMOVE EXISTING ZABBIX ##########"
+if systemctl list-unit-files | grep -q "zabbix_agentd"; then
+  systemctl stop zabbix_agentd
+  ps -ef | grep zabbix | grep -v grep
+else
+  echo "[`date`]: zabbix_agentd service not found, skipping stop."
+fi
+
+# Break all the Zabbix-related links
+find /usr /etc /run -type l -name "*zabbix*" -exec unlink {} \;
+
+# Remove old Zabbix files
+rm -rf /etc/init.d/zabbix_agentd /usr/local/zabbix /work/softwares/zabbix /run/systemd/generator.late/zabbix_agentd.service /run/lock/subsys/zabbix_agentd
+
+# Uninstall any existing Zabbix agent RPMs
+rpm_name=$(rpm -qa | grep -i 'zabbix-agent')
+if [ -n "$rpm_name" ]; then
+  rpm -e "$rpm_name"
+else
+  echo "[`date`]: No Zabbix agent RPM found to uninstall."
+fi
+
+echo "[`date`]: ########## INSTALL NEW ZABBIX v7 ##########"
+
+# Install new Zabbix agent only if RPM files are present
+if [ -f "zabbix-agent2-7.0.0-release1.el9.x86_64.rpm" ] && [ -f "zabbix-sender-7.0.0-release1.el9.x86_64.rpm" ]; then
+  rpm -ivh zabbix-agent2-7.0.0-release1.el9.x86_64.rpm
+  rpm -ivh zabbix-sender-7.0.0-release1.el9.x86_64.rpm
+else
+  echo "[`date`]: Zabbix RPM files not found, please check file paths."
+  exit 1
+fi
+
+# Enable and configure the agent as a service
+systemctl enable zabbix-agent2
+sed -i "s/User=zabbix/User=root/g;s/Group=zabbix/Group=root/g" /usr/lib/systemd/system/zabbix-agent2.service
+systemctl daemon-reload
+
+echo "[`date`]: Existing config."
+egrep -v "^$|^#" /etc/zabbix/zabbix_agent2.conf
+
+# Update Zabbix agent configuration
+sed -i "s/^Hostname.*/Hostname=$(hostname)/g;s/^Server=.*/Server=184.127.0.66/g;s/^ServerActive=.*/ServerActive=184.127.0.66/g" /etc/zabbix/zabbix_agent2.conf
+sed -i "s/^# UnsafeUserParameters=0/UnsafeUserParameters=1/g;s/# UserParameter=/UserParameter=usercmd[*],\$1/g" /etc/zabbix/zabbix_agent2.conf
+echo "AllowKey=system.run[*]" >> /etc/zabbix/zabbix_agent2.conf
+
+echo "[`date`]: Updated config."
+egrep -v "^$|^#" /etc/zabbix/zabbix_agent2.conf
+
+# Restart the Zabbix agent service and check status
+systemctl restart zabbix-agent2
+if systemctl is-active --quiet zabbix-agent2; then
+  echo "[`date`]: Zabbix-agent2 restarted successfully."
+else
+  echo "[`date`]: Error restarting Zabbix-agent2. Check logs for more details."
+fi
+
 sed -i "s/^Hostname.*/Hostname=`hostname`/g;s/^Server=.*/Server=184.127.0.66/g;s/^ServerActive=.*/ServerActive=184.127.0.66/g" /etc/zabbix/zabbix_agent2.conf
 sed -i "s/^# UnsafeUserParameters=0/UnsafeUserParameters=1/g;s/# UserParameter=/UserParameter=usercmd[*],\$1/g" /etc/zabbix/zabbix_agent2.conf
 echo "AllowKey=system.run[*]" >> /etc/zabbix/zabbix_agent2.conf
