@@ -1,0 +1,30 @@
+echo "[`date`]: ########## REMOVE EXISTING ZABBIX ##########"
+service zabbix_agentd stop; ps -ef | grep zabbix | grep -v grep
+# Break all the zabbix related links (in /etc/ and /usr folders)
+find /usr /etc /run -type l -name "*zabbix*" -exec unlink {} \;
+# Remove all the old zabbix stuff
+rm -rf /etc/init.d/zabbix_agentd /usr/local/zabbix /work/softwares/zabbix /run/systemd/generator.late/zabbix_agentd.service /run/lock/subsys/zabbix_agentd
+
+rpm_name=$(rpm -qa | grep -i 'zabbix-agent'); rpm -e $rpm_name
+
+echo "[`date`]: ########## INSTALL NEW ZABBIX v7 ##########"
+
+rpm -ivh zabbix-agent2-7.0.0-release1.el9.x86_64.rpm
+rpm -ivh zabbix-sender-7.0.0-release1.el9.x86_64.rpm
+
+# enable the agent as a service
+systemctl enable zabbix-agent2
+sed -i "s/User=zabbix/User=root/g;s/Group=zabbix/Group=root/g" /usr/lib/systemd/system/zabbix-agent2.service
+systemctl daemon-reload
+echo "[`date`]: Existing config."
+egrep -v "^$|^#" /etc/zabbix/zabbix_agent2.conf
+
+#FOR UAT
+sed -i "s/^Hostname.*/Hostname=`hostname`/g;s/^Server=.*/Server=184.127.0.66/g;s/^ServerActive=.*/ServerActive=184.127.0.66/g" /etc/zabbix/zabbix_agent2.conf
+sed -i "s/^# UnsafeUserParameters=0/UnsafeUserParameters=1/g;s/# UserParameter=/UserParameter=usercmd[*],\$1/g" /etc/zabbix/zabbix_agent2.conf
+echo "AllowKey=system.run[*]" >> /etc/zabbix/zabbix_agent2.conf
+
+echo "[`date`]: Updated config."
+egrep -v "^$|^#" /etc/zabbix/zabbix_agent2.conf
+# Restart the process
+systemctl restart zabbix-agent2
