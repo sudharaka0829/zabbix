@@ -1,0 +1,6 @@
+[Fri 11/01/2024 11:24:56.07]: Starting Zabbix Agent configuration update.  
+[Fri 11/01/2024 11:24:57.25]: Added AllowKey=system.run[*] to configuration. 
+[Fri 11/01/2024 11:24:57.25]: Configuration updated successfully. 
+[Fri 11/01/2024 11:24:57.26]: Attempting to restart Zabbix Agent 2. 
+[Fri 11/01/2024 11:25:01.92]: Zabbix Agent 2 restarted successfully. 
+[Fri 11/01/2024 11:25:01.93]: Zabbix Agent configuration update completed. 
