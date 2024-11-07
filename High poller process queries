@@ -94,3 +94,6 @@ LIMIT 10;
 
 
 SELECT h.host, COUNT(hi.itemid) AS history_entries FROM history hi JOIN items i ON hi.itemid = i.itemid JOIN hosts h ON i.hostid = h.hostid WHERE hi.clock BETWEEN UNIX_TIMESTAMP('2024-09-28 22:00:00') AND UNIX_TIMESTAMP('2024-09-29 01:00:00') GROUP BY h.host ORDER BY history_entries DESC LIMIT 10;
+
+
+SELECT h.host, i.key_, FROM_UNIXTIME(i.lastclock) AS last_poll_time, i.lastns AS last_execution_time_ns FROM items i JOIN hosts h ON i.hostid = h.hostid WHERE i.status = 0 ORDER BY i.lastns DESC LIMIT 10;
