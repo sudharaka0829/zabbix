@@ -1,22 +1,85 @@
-UserParameter=db2.metrics[DatabaseStatus], "/etc/zabbix/scripts/script.sh '$1'"
+To run Zabbix Server with SELinux in enforcing mode alongside MariaDB, you need to configure SELinux policies to allow Zabbix and MariaDB to interact seamlessly. Below are the steps and rules you need to apply:
+
+1. Set SELinux Contexts for MariaDB Data Directory
+
+If MariaDB’s data directory is not the default (/var/lib/mysql), update the SELinux context:
+
+semanage fcontext -a -t mysqld_db_t "/path/to/custom-mysql-dir(/.*)?"
+restorecon -R /path/to/custom-mysql-dir
+
+For example, if your data directory is /data/mysql:
+
+semanage fcontext -a -t mysqld_db_t "/data/mysql(/.*)?"
+restorecon -R /data/mysql
+
+2. Allow Zabbix Server to Connect to MariaDB
+
+Run the following SELinux commands to allow Zabbix to communicate with MariaDB:
+
+setsebool -P zabbix_can_network=1
+
+3. Enable Database Connectivity for Zabbix
+
+Allow Zabbix to connect to databases using the proper SELinux rules:
+	•	If MariaDB is running on the same server:
+
+setsebool -P daemons_enable_cluster_mode 1
 
 
-DatabaseStatus:ACTIVE
+	•	If MariaDB is running on a remote server, allow Zabbix to connect over the network:
+
+setsebool -P zabbix_can_network 1
+
+4. SELinux Rules for Custom Ports
+
+If MariaDB is running on a non-default port, update SELinux to allow the port:
+
+semanage port -a -t mysqld_port_t -p tcp <custom-port>
+
+For example, if MariaDB is running on port 3307:
+
+semanage port -m -t mysqld_port_t -p tcp 3307
+
+5. Check and Fix SELinux Denials
+
+If SELinux is blocking actions between Zabbix and MariaDB, use audit2allow to create and apply a policy module:
+
+Generate a policy for denied actions:
+
+	1.	Review SELinux denials:
+
+ausearch -m avc -ts recent
 
 
-[{"Thread":"1","Archive_Diff":"0"},{"Thread":"2","Archive_Diff":"0"}]
+	2.	Generate a policy module:
+
+ausearch -c 'zabbix_server' --raw | audit2allow -M zabbix_mariadb
 
 
-select al.thrd "Thread",(almax - lhmax) "Archive_Diff"
-from  (select thread# thrd, max(sequence#) almax from v$archived_log where resetlogs_change#=(select resetlogs_change# from v$database) group by thread#) al,
-(select thread# thrd, max(sequence#) lhmax from v$log_history where resetlogs_change#=(select resetlogs_change# from v$database) group by thread#) lh
-where al.thrd = lh.thrd; 
+	3.	Load the policy module:
+
+semodule -i zabbix_mariadb.pp
+
+6. Test the Configuration
+
+	•	Restart Zabbix and MariaDB services:
+
+systemctl restart zabbix-server
+systemctl restart mariadb
 
 
+	•	Check SELinux status to ensure no denials are logged:
 
-[2024-05-25 21:46:32] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.idxhit[BUFFERPOOL8K]:  has empty value!
-[2024-05-25 21:46:32] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.totalhit[BUFFERPOOL8K]:  has empty value!
-[2024-05-25 21:46:32] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.idxhit[BUFFERPOOL32K]:  has empty value!
-[2024-05-25 21:46:32] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.totalhit[BUFFERPOOL32K]:  has empty value!
-[2024-05-25 21:46:32] [WARN ] [ZabbixSender[run(ZabbixSender.java:87)]]: Item ASOMDWFDB404 db2.bufferpool.idxhit[MYDB_32K]:  has empty value!
-[2024-05-25 21:46:32] [ERROR] [ZabbixSender[requestZabbix(Config.java:1182)]]: Zabbix Server (184.127.0.65:10051) has returned empty response for request:
+ausearch -m avc -ts today
+
+Summary of Required SELinux Commands
+
+Here’s a consolidated list of commands you may need to run:
+
+setsebool -P zabbix_can_network 1
+setsebool -P daemons_enable_cluster_mode 1
+semanage port -a -t mysqld_port_t -p tcp <port>  # If using a custom port
+semanage fcontext -a -t mysqld_db_t "/path/to/custom-mysql-dir(/.*)?"
+restorecon -R /path/to/custom-mysql-dir
+
+This setup ensures that Zabbix Server and MariaDB can communicate without issues while keeping SELinux in enforcing mode.
