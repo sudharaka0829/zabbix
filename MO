@@ -1,5 +1,95 @@
-UserParameter=usercma,sh -c "lsof -u temenos | wc -l"
+To configure SELinux for Zabbix 7, follow these steps to ensure that SELinux doesn’t block Zabbix services:
+
+1. Check SELinux Status
+
+Run the following command to verify if SELinux is enabled:
+
+sestatus
+
+If SELinux is disabled, enable it by editing /etc/selinux/config and setting:
+
+SELINUX=enforcing
+
+Then reboot the system:
+
+reboot
+
+2. Install Required SELinux Tools
+
+Ensure SELinux management tools are installed:
+
+sudo yum install -y policycoreutils policycoreutils-python-utils
+
+3. Set SELinux Context for Zabbix Files
+
+Update file and directory contexts for Zabbix:
+
+For Zabbix Server:
+
+semanage fcontext -a -t zabbix_var_run_t "/run/zabbix(/.*)?"
+restorecon -R /run/zabbix
+semanage fcontext -a -t zabbix_log_t "/var/log/zabbix(/.*)?"
+restorecon -R /var/log/zabbix
+semanage fcontext -a -t zabbix_etc_t "/etc/zabbix(/.*)?"
+restorecon -R /etc/zabbix
+
+For Zabbix Web:
+
+semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/zabbix(/.*)?"
+restorecon -R /var/www/zabbix
+
+4. Allow Zabbix to Use Necessary Ports
+
+If you are using custom ports, update SELinux to allow Zabbix to use them:
+
+semanage port -a -t zabbix_port_t -p tcp <port>
+
+For example, if Zabbix uses the default port 10051:
+
+semanage port -m -t zabbix_port_t -p tcp 10051
+
+5. Add SELinux Rules for Zabbix
+
+Create and load an SELinux policy module for Zabbix if needed. This step is required if certain operations are blocked. For example:
+
+Generate a policy for denied actions:
+
+	1.	Check for SELinux denials in logs:
+
+ausearch -m avc -ts recent
 
 
+	2.	Use audit2allow to generate rules:
 
-2024-08-30 16:29:22 164 [Warning] Aborted connection 164 to db: 'zabbix_fulldump' user: 'zabbix' host: '184.127.0.214' (Got an error reading communication packets)
+ausearch -c 'zabbix_server' --raw | audit2allow -M zabbix_local
+
+
+	3.	Load the policy module:
+
+semodule -i zabbix_local.pp
+
+6. Restart Services
+
+Restart Zabbix and related services to apply changes:
+
+systemctl restart zabbix-server
+systemctl restart httpd
+
+7. Test the Configuration
+
+Verify that Zabbix is running without SELinux denials:
+
+sestatus
+ausearch -m avc -ts today
+
+Troubleshooting
+
+	•	If any issues arise, review SELinux logs:
+
+journalctl -xe | grep SELinux
+ausearch -m avc -ts recent
+
+
+	•	Adjust contexts or policies as needed.
+
+This configuration ensures Zabbix operates smoothly with SELinux in enforcing mode.
