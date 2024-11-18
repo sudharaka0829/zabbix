@@ -92,4 +92,4 @@ ausearch -m avc -ts recent
 
 	•	Adjust contexts or policies as needed.
 
-This configuration ensures Zabbix operates smoothly with SELinux in enforcing mode.
+This configuration ensures Zabbix operates smoothly with SELinux in enforcing mode. 
