@@ -120,3 +120,7 @@ SELECT h.name AS host_name, i.name AS item_name, i.delay AS item_delay, (hi2.clo
 
 
 SELECT h.name AS host_name, i.name AS item_name, i.delay AS item_delay, MIN(hi.clock) AS first_record_time, MAX(hi.clock) AS last_record_time, TIMESTAMPDIFF(SECOND, MIN(hi.clock), MAX(hi.clock)) AS total_duration, COUNT(hi.clock) AS records_received FROM history AS hi JOIN items AS i ON hi.itemid = i.itemid JOIN hosts AS h ON i.hostid = h.hostid WHERE hi.clock BETWEEN UNIX_TIMESTAMP('2024-12-08 22:30:00') AND UNIX_TIMESTAMP('2024-12-08 23:30:00') GROUP BY h.name, i.name ORDER BY h.name, i.name;
+
+
+
+ SELECT h.name AS host_name, i.name AS item_name, i.delay AS item_delay, MIN(hi.clock) AS first_record_time, MAX(hi.clock) AS last_record_time, TIMESTAMPDIFF(SECOND, MIN(hi.clock), MAX(hi.clock)) AS total_duration, COUNT(hi.clock) AS records_received FROM history AS hi JOIN items AS i ON hi.itemid = i.itemid JOIN hosts AS h ON i.hostid = h.hostid WHERE hi.clock BETWEEN UNIX_TIMESTAMP('2024-12-08 22:30:00') AND UNIX_TIMESTAMP('2024-12-08 23:30:00') and i.delay = '1m' GROUP BY h.name, i.name ORDER BY h.name, i.name ;
