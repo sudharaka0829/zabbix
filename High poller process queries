@@ -99,3 +99,14 @@ SELECT h.host, i.key_, FROM_UNIXTIME(hi.clock) AS last_poll_time FROM items i JO
 
 
 SELECT h.host, i.key_, FROM_UNIXTIME(hi.clock) AS last_poll_time, (hi.clock - prev_hi.clock) AS poll_delay_seconds FROM items i JOIN hosts h ON i.hostid = h.hostid JOIN history hi ON i.itemid = hi.itemid LEFT JOIN history prev_hi ON i.itemid = prev_hi.itemid AND hi.clock > prev_hi.clock WHERE i.status = 0 AND hi.clock BETWEEN UNIX_TIMESTAMP('2024-09-28 22:00:00') AND UNIX_TIMESTAMP('2024-09-29 01:00:00') ORDER BY poll_delay_seconds DESC LIMIT 10;
+
+
+
+
+SELECT i.name AS item_name, i.delay AS item_delay, (hi2.clock - hi1.clock) AS time_duration 
+FROM history AS hi1 
+JOIN history AS hi2 ON hi1.itemid = hi2.itemid AND hi1.clock &lt; hi2.clock 
+JOIN items AS i ON hi1.itemid = i.itemid 
+WHERE hi1.clock BETWEEN UNIX_TIMESTAMP('2024-12-08 22:30:00') AND UNIX_TIMESTAMP('2024-12-08 23:30:00') 
+ORDER BY hi1.itemid, hi1.clock 
+LIMIT 10;
