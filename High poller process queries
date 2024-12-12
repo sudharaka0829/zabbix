@@ -114,3 +114,6 @@ LIMIT 10;
 
 
 SELECT i.name AS item_name, i.delay AS item_delay, (hi2.clock - hi1.clock) AS observed_delay, (hi2.clock - hi1.clock) - i.delay AS deviation FROM history AS hi1 JOIN history AS hi2 ON hi1.itemid = hi2.itemid AND hi1.clock < hi2.clock JOIN items AS i ON hi1.itemid = i.itemid WHERE hi1.clock BETWEEN UNIX_TIMESTAMP('2024-12-08 22:30:00') AND UNIX_TIMESTAMP('2024-12-08 23:30:00') ORDER BY hi1.itemid, hi1.clock LIMIT 10;
+
+
+SELECT h.name AS host_name, i.name AS item_name, i.delay AS item_delay, (hi2.clock - hi1.clock) AS observed_delay, (hi2.clock - hi1.clock) - i.delay AS deviation FROM history AS hi1 JOIN history AS hi2 ON hi1.itemid = hi2.itemid AND hi1.clock < hi2.clock JOIN items AS i ON hi1.itemid = i.itemid JOIN hosts AS h ON i.hostid = h.hostid WHERE hi1.clock BETWEEN UNIX_TIMESTAMP('2024-12-08 22:30:00') AND UNIX_TIMESTAMP('2024-12-08 23:30:00') ORDER BY h.name, hi1.itemid, hi1.clock LIMIT 10;
