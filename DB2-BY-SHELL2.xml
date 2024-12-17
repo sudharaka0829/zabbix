@@ -1,19 +1,72 @@
-SELECT h.hostid, h.host AS hostname, h.name AS display_name, i.lastvalue AS agent_version FROM hosts h JOIN items i ON h.hostid = i.hostid WHERE i.key_ = 'agent.version' AND i.status = 0 AND h.status = 0;
+Yes, the SNMP approach can identify all fans if the Cisco device provides detailed fan information via the MIBs. Most Cisco devices expose multiple fan statuses using table-based OIDs. For example:
+
+Key OIDs for Multiple Fans
+	1.	CISCO-ENTITY-FRU-CONTROL-MIB (Fan Tray Status):
+	•	OID: .1.3.6.1.4.1.9.9.117.1.4.1.1.1 (cefcFanTrayOperStatus)
+	•	Each entry in the table corresponds to a fan or fan tray.
+	•	Use the table index to differentiate between fans (e.g., .1, .2, .3, etc.).
+	2.	ENTITY-MIB (Generic Sensor Monitoring):
+	•	OID: .1.3.6.1.2.1.47.1.1.1.1 (ENTITY-MIB Table):
+	•	entPhysicalDescr (.1.3.6.1.2.1.47.1.1.1.1.2) → Describes each fan.
+	•	entPhysicalName (.1.3.6.1.2.1.47.1.1.1.1.7) → Name of the fan or fan tray.
+	•	This allows identification of all fans by their description or name.
+	3.	ENTITY-SENSOR-MIB (Fan Status):
+	•	OID: .1.3.6.1.2.1.99.1.1.1.4 (entSensorStatus):
+	•	Status values are provided for individual fans.
+
+How to Identify All Fans
+	1.	Perform a Full SNMP Walk:
+Run snmpwalk on the base OID to retrieve all fan-related entries:
+
+snmpwalk -v2c -c public <device_ip> .1.3.6.1.4.1.9.9.117.1.4.1.1
+
+Example output:
+
+.1.3.6.1.4.1.9.9.117.1.4.1.1.1.1 = INTEGER: 1 (up)
+.1.3.6.1.4.1.9.9.117.1.4.1.1.1.2 = INTEGER: 1 (up)
+.1.3.6.1.4.1.9.9.117.1.4.1.1.1.3 = INTEGER: 6 (failed)
+
+This indicates multiple fans (index 1, 2, 3), with the status of each.
+
+	2.	Map Fan Descriptions with Status:
+Use entPhysicalDescr to match the physical description of each fan to its operational status.
+
+snmpwalk -v2c -c public <device_ip> .1.3.6.1.2.1.47.1.1.1.1.2
+
+Example output:
+
+.1.3.6.1.2.1.47.1.1.1.1.2.1 = STRING: "Fan 1"
+.1.3.6.1.2.1.47.1.1.1.1.2.2 = STRING: "Fan 2"
+.1.3.6.1.2.1.47.1.1.1.1.2.3 = STRING: "Fan 3"
+
+This helps you identify which fan corresponds to which status.
+
+Zabbix Configuration for All Fans
+	1.	Discovery Rule:
+Use a Zabbix Low-Level Discovery (LLD) rule to dynamically detect all fans:
+	•	Discovery OID: .1.3.6.1.2.1.47.1.1.1.1.2 (entPhysicalDescr).
+	•	SNMP Key: fan.discovery.
+Macro:
+	•	{#FANNAME} → Extracted from entPhysicalDescr.
+	•	{#FANINDEX} → Extracted index.
+	2.	Item Prototype:
+Create an SNMP item prototype:
+	•	Name: Fan {#FANNAME} Status
+	•	OID: .1.3.6.1.4.1.9.9.117.1.4.1.1.1.{#FANINDEX}
+	•	Value Map: Map status values (e.g., 1 → Up, 6 → Failed).
+	3.	Trigger Prototype:
+Define a trigger for each fan:
+	•	Expression:
+
+{host:fan.status[{#FANINDEX}].last()}=6
 
 
-SELECT h.host AS 'Hostname', it.ip AS 'IP Address', MAX(x.value) AS 'Agent Version' FROM items i JOIN hosts h ON i.hostid = h.hostid JOIN history_str x ON x.itemid = i.itemid LEFT JOIN interface it ON h.hostid = it.hostid WHERE i.key_ = 'agent.version' GROUP BY h.host, it.ip;
+	•	Description: Fan {#FANNAME} is in FAILED state!
 
+Verify Output
 
-SELECT h.hostid, h.name
-FROM hosts h
-JOIN interfaces i ON h.hostid = i.hostid
-WHERE i.type = 1;  -- Type 1 corresponds to Zabbix agent
+After setup:
+	•	Zabbix will automatically detect all fans and their statuses.
+	•	The monitoring dashboard will list individual fans with their current operational states.
 
-
-
-134428:20241024:153237.027 HA manager error: multiple servers have been started without configuring "HANodeName" parameter
-134431:20241024:153237.049 HA manager has been stopped
-134428:20241024:153237.051 Zabbix Server stopped. Zabbix 7.0.5 (revision 9406e67a5ff).
-
-
-DELETE FROM events WHERE source = 0 AND acknowledged = 1 AND value = 0 AND clock < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL [RETENTION_DAYS] DAY));
+Let me know if you need help setting up the LLD or debugging!
