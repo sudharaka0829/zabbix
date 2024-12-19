@@ -133,4 +133,7 @@ sudo firewall-cmd --add-port=161/udp --permanent
 sudo firewall-cmd --add-port=162/udp --permanent
 sudo firewall-cmd --reload
 
-This configuration will enable you to receive and process SNMP traps in Zabbix 7 on RHEL 9. Let me know if you need assistance with any specific step!
+This configuration will enable you to receive and process SNMP traps in Zabbix 7 on RHEL 9. Let me know if you need assistance with any specific step
+
+authCommunity log,execute,net public
+traphandle default /usr/bin/zabbix_sender -z <ZABBIX_SERVER_IP> -s "$HOSTNAME" -k snmptrap -o "$TRAP"
