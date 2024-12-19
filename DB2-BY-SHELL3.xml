@@ -1,38 +1,136 @@
-SELECT h.hostid, h.name
-FROM hosts h
-JOIN interfaces i ON h.hostid = i.hostid
-JOIN items it ON h.hostid = it.hostid
-WHERE i.type = 1              -- Type 1 corresponds to Zabbix agent
-AND it.key_ = 'agent.version' -- Filtering for the agent.version key
-AND it.status = 0;            -- Ensure the item is enabled (status = 0)
+Installing and configuring SNMP traps in Zabbix 7 on RHEL 9 involves multiple steps. Below is a comprehensive guide:
+
+1. Install Required Packages
+
+Install the necessary tools to handle SNMP traps:
+
+sudo dnf install net-snmp net-snmp-utils net-snmp-perl -y
+
+2. Configure SNMP Daemon
+	1.	Edit the SNMP daemon configuration file:
+
+sudo vi /etc/snmp/snmpd.conf
 
 
-SELECT h.hostid, 
-       h.name, 
-       COALESCE(it.lastvalue, 'not working') AS agent_version
-FROM hosts h
-JOIN interfaces i ON h.hostid = i.hostid
-JOIN items it ON h.hostid = it.hostid
-WHERE i.type = 1                        -- Type 1 corresponds to Zabbix agent
-AND it.key_ = 'agent.version'           -- Filtering for the agent.version key
-AND it.status = 0;                      -- 
+	2.	Add the following to enable SNMP daemon functionality:
+
+agentAddress udp:161,udp6:[::1]:161
+rocommunity public
 
 
+	3.	Restart and enable the SNMP daemon:
 
-SELECT h.hostid, 
-       h.name, 
-       COALESCE(latest.lastvalue, 'not working') AS agent_version
-FROM hosts h
-JOIN interfaces i ON h.hostid = i.hostid
-JOIN items it ON h.hostid = it.hostid
-LEFT JOIN (
-    SELECT itemid, lastvalue
-    FROM history
-    WHERE itemid IN (SELECT itemid FROM items WHERE key_ = 'agent.version')
-    ORDER BY clock DESC
-) AS latest ON it.itemid = latest.itemid
-WHERE i.type = 1                          -- Type 1 corresponds to Zabbix agent
-AND it.key_ = 'agent.version'             -- Filtering for the agent.version key
-AND it.status = 0;                        -- Ensure the item is enabled (status = 0)
+sudo systemctl enable snmpd
+sudo systemctl start snmpd
 
-Ensure the item is enabled (status = 0)
+3. Install and Configure SNMP Trap Daemon (snmptrapd)
+	1.	Install snmptrapd (it is part of net-snmp):
+
+sudo dnf install net-snmp -y
+
+
+	2.	Edit the snmptrapd configuration:
+
+sudo vi /etc/snmp/snmptrapd.conf
+
+
+	3.	Add the following configuration:
+
+authCommunity log,execute,net public
+disableAuthorization yes
+traphandle default /usr/local/bin/snmptrap_to_zabbix.sh
+
+	•	traphandle: This points to a script that processes traps and forwards them to Zabbix.
+
+	4.	Restart and enable the snmptrapd service:
+
+sudo systemctl enable snmptrapd
+sudo systemctl start snmptrapd
+
+4. Create the Trap Handling Script
+
+Create a script to forward SNMP traps to Zabbix.
+	1.	Create the script file:
+
+sudo vi /usr/local/bin/snmptrap_to_zabbix.sh
+
+
+	2.	Add the following content:
+
+#!/bin/bash
+ZABBIX_SERVER="127.0.0.1"
+HOSTNAME="SNMP-Trap-Source"
+TRAP_MESSAGE=$(cat)
+
+/usr/bin/zabbix_sender -z $ZABBIX_SERVER -s "$HOSTNAME" -k snmptrap -o "$TRAP_MESSAGE"
+
+
+	3.	Make the script executable:
+
+sudo chmod +x /usr/local/bin/snmptrap_to_zabbix.sh
+
+5. Configure Zabbix Server for SNMP Traps
+	1.	Edit the Zabbix server configuration:
+
+sudo vi /etc/zabbix/zabbix_server.conf
+
+
+	2.	Enable the SNMP trapper:
+
+StartSNMPTrapper=1
+SNMPTrapperFile=/var/log/snmptrap/snmptrap.log
+
+
+	3.	Create the SNMP trap log file:
+
+sudo mkdir -p /var/log/snmptrap
+sudo touch /var/log/snmptrap/snmptrap.log
+sudo chown zabbix:zabbix /var/log/snmptrap/snmptrap.log
+
+
+	4.	Restart the Zabbix server:
+
+sudo systemctl restart zabbix-server
+
+6. Configure Zabbix Web Interface
+	1.	Log in to the Zabbix web interface.
+	2.	Go to Configuration > Hosts and create a new host (or edit an existing one):
+	•	Host name: Match the source of the SNMP traps.
+	•	Interface: Add an SNMP interface.
+	3.	Add a new item to capture SNMP traps:
+	•	Name: SNMP Trap
+	•	Type: SNMP Trap
+	•	Key: snmptrap
+	•	Type of information: Text
+
+7. Test the Setup
+	1.	Send a test SNMP trap:
+
+snmptrap -v 2c -c public 127.0.0.1 "" .1.3.6.1.4.1.8072.2.3.0.1
+
+
+	2.	Check the SNMP trap log:
+
+tail -f /var/log/snmptrap/snmptrap.log
+
+
+	3.	Verify in the Zabbix web interface under Monitoring > Latest Data.
+
+8. Troubleshooting
+	•	Check snmptrapd logs:
+
+sudo journalctl -u snmptrapd
+
+
+	•	Check Zabbix server logs:
+
+sudo tail -f /var/log/zabbix/zabbix_server.log
+
+
+	•	Ensure the firewall allows SNMP and SNMP trap ports:
+
+sudo firewall-cmd --add-port=161/udp --permanent
+sudo firewall-cmd --add-port=162/udp --permanent
+sudo firewall-cmd --reload
+
+This configuration will enable you to receive and process SNMP traps in Zabbix 7 on RHEL 9. Let me know if you need assistance with any specific step!
