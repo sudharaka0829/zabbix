@@ -15,3 +15,8 @@ sudo semanage fcontext -a -t zabbix_agent_conf_t "/etc/zabbix(/.*)?"
 sudo restorecon -R /etc/zabbix
 
 
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+
+ausearch -c 'zabbix_server' --raw | audit2allow -M zabbix_local
+semodule -i zabbix_local.pp
