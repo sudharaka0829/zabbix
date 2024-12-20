@@ -210,5 +210,16 @@ snmptrap -v2c -c public 127.0.0.1 '' SNMPv2-MIB::coldStart
 
 
 
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+
+Dec 20 14:38:18 ASOMUMNAP101 snmptrapd[1033800]: 2024-12-20 14:38:18 localhost [UDP: [127.0.0.1]:48497->[127.0.0.1]:162]:#012DISMAN-EVENT-MIB::sysUpTimeInstance = Timeticks: (257043937) 29 days, 18:00:39.37#011SNMPv2-MIB::snmpTrapOID.0 = OID: SNMPv2-MIB::coldStart
+Dec 20 14:38:18 ASOMUMNAP101 snmptrapd[2592048]: Response from "127.0.0.1:10051": "processed: 0; failed: 1; total: 1; seconds spent: 0.000008"
+Dec 20 14:38:18 ASOMUMNAP101 snmptrapd[2592047]: sent: 1; skipped: 0; total: 1
+Dec 20 14:38:18 ASOMUMNAP101 snmptrapd[2592050]: Response from "127.0.0.1:10051": "processed: 0; failed: 1; total: 1; seconds spent: 0.000008"
+Dec 20 14:38:18 ASOMUMNAP101 snmptrapd[2592049]: sent: 1; skipped: 0; total: 1
+Dec 20 14:38:18 ASOMUMNAP101 snmptrapd[2592052]: Response from "127.0.0.1:10051": "processed: 0; failed: 1; total: 1; seconds spent: 0.000008"
+
+
 
 
