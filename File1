@@ -1,14 +1,31 @@
-{Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",l2nd,4,,].logsource(^l2nd$)}=1 and {Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",l2nd,4,,].logeventid(4)}=1
+#!/bin/bash
 
-Item key
-eventlog[System,,"ERROR|CRITICAL",mpio,16,,]
+LOG_FILE="/path/to/logfile.log"
+STATE_FILE="/tmp/log_state.txt"
+CHUNK_SIZE=500
+WORD="ERROR"  # Word to search for
 
-Trigger
-{Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",mpio,16,,].logsource(^mpio$)}=1 and {Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",mpio,16,,].logeventid(16)}=1
+# Initialize state file if it doesn't exist
+if [ ! -f "$STATE_FILE" ]; then
+    echo 0 > "$STATE_FILE"
+fi
 
+# Read the last position
+LAST_POS=$(cat "$STATE_FILE")
+CURRENT_LINES=$(wc -l < "$LOG_FILE")
 
-{Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",mpio,16,,].logsource(^mpio$)}=1 and
-{Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",mpio,16,,].logeventid(16)}=1
+# Calculate the ending position for the current run
+END_POS=$((LAST_POS + CHUNK_SIZE))
 
+# Display "Reading" message
+echo "Reading lines $((LAST_POS + 1)) to $END_POS from $LOG_FILE for word '$WORD'"
 
-{Template-Windows-IA-Common-2019:eventlog[System,,"ERROR|CRITICAL",mpio,16,,].nodata(3600)}=1
+# Read and grep the next chunk of lines
+if [ "$END_POS" -le "$CURRENT_LINES" ]; then
+    sed -n "$((LAST_POS + 1)),$END_POS p" "$LOG_FILE" | grep --color=auto "$WORD"
+    echo "$END_POS" > "$STATE_FILE"
+else
+    # If fewer lines are available, process the remaining lines
+    sed -n "$((LAST_POS + 1)),$CURRENT_LINES p" "$LOG_FILE" | grep --color=auto "$WORD"
+    echo "$CURRENT_LINES" > "$STATE_FILE"
+fi
