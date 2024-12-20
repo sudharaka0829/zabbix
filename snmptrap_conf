@@ -137,3 +137,78 @@ This configuration will enable you to receive and process SNMP traps in Zabbix 7
 
 authCommunity log,execute,net public
 traphandle default /usr/bin/zabbix_sender -z <ZABBIX_SERVER_IP> -s "$HOSTNAME" -k snmptrap -o "$TRAP"
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+
+
+
+sudo nano /usr/lib/zabbix/alertscripts/snmptrap.sh
+
+#!/bin/bash
+ZABBIX_SERVER="127.0.0.1"
+ZABBIX_PORT="10051"
+HOST="SNMP_TRAPS"
+
+while read LINE; do
+    /usr/bin/zabbix_sender -z $ZABBIX_SERVER -p $ZABBIX_PORT -s "$HOST" -k snmptrap -o "$LINE"
+done
+
+
+
+#!/bin/bash
+ZABBIX_SERVER="127.0.0.1"
+ZABBIX_PORT="10051"
+HOST=$(echo "$@" | awk '{print $NF}')
+
+while read LINE; do
+    /usr/bin/zabbix_sender -z $ZABBIX_SERVER -p $ZABBIX_PORT -s "$HOST" -k snmptrap -o "$LINE"
+done
+
+
+
+sudo chmod +x /usr/lib/zabbix/alertscripts/snmptrap.sh
+
+
+vi /etc/snmp/snmptrapd.conf
+
+authCommunity log,execute,net public
+forward default udp:127.0.0.1:162
+
+
+authCommunity log,execute,net public
+traphandle default /usr/lib/zabbix/alertscripts/snmptrap.sh
+
+/etc/snmp/snmp.conf
+mibs +ALL
+
+
+sudo systemctl restart snmptrapd
+
+vi /etc/zabbix/zabbix_server.conf
+StartSNMPTrapper=1
+SNMPTrapperFile=/var/log/snmptrap/snmptrap.log
+
+
+snmptrap -v2c -c public 127.0.0.1 '' NET-SNMP-EXAMPLES-MIB::netSnmpExampleHeartbeatNotification
+snmptrap -v2c -c public 127.0.0.1 '' SNMPv2-MIB::coldStart
+
+
+
+
+
+
+
+
