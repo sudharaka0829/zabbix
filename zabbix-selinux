@@ -31,12 +31,18 @@ semodule -i zabbix_local.pp
 
 mariadb
 
-sudo ausearch -m avc -c mysqld
-sudo semanage fcontext -a -t mysqld_db_t "/path/to/directory(/.*)?"
-sudo restorecon -Rv /path/to/directory
+ semanage fcontext -a -t mysqld_db_t "/mysql/data(/.*)?"
+ restorecon -R /mysql/data
+ semanage fcontext -a -t mysqld_log_t "/mysql/logs(/.*)?"
+ restorecon -R /mysql/logs
+ semanage fcontext -a -t mysqld_log_t '/mysql/logs/error.log'
+ semanage fcontext -a -t mysqld_db_t '/mysql/logs/error.log'
 
+zabbix server 
 
 ausearch -m avc -ts recent
- 
 ausearch -c 'zabbix_server' --raw | audit2allow -M zabbix_local
 semodule -i zabbix_local.pp
+
+
+
