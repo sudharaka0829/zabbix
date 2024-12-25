@@ -32,7 +32,11 @@ semodule -i zabbix_local.pp
 mariadb
 
 sudo ausearch -m avc -c mysqld
-
 sudo semanage fcontext -a -t mysqld_db_t "/path/to/directory(/.*)?"
-
 sudo restorecon -Rv /path/to/directory
+
+
+ausearch -m avc -ts recent
+ 
+ausearch -c 'zabbix_server' --raw | audit2allow -M zabbix_local
+semodule -i zabbix_local.pp
