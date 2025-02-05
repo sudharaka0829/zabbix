@@ -7,3 +7,6 @@ DIR_TO_CHECK="/path/to/directory"
 find "$DIR_TO_CHECK" -type f -exec chown root:root {} \;
 
 echo "Ownership changed to root:root for all files in $DIR_TO_CHECK."
+
+
+find /path/to/directory -type f -exec stat -c "%A %a %u %g %n" {} \ | awk '$3 ~ /^[0-9]+$/ && $4 ~ /^[0-9]+$/' 
