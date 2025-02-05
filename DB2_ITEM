@@ -1,1 +1,9 @@
-find "$DIR_TO_CHECK" -type f -exec stat -c "%A %a %u %g %n" {} \;
+#!/bin/bash
+
+# Directory to check (modify as needed)
+DIR_TO_CHECK="/path/to/directory"
+
+# Change ownership of the listed files to root:root
+find "$DIR_TO_CHECK" -type f -exec chown root:root {} \;
+
+echo "Ownership changed to root:root for all files in $DIR_TO_CHECK."
