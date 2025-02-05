@@ -1,1 +1,1 @@
-db2.tablespaces[{#TABLESPACE},UsedPercentage]
+find "$DIR_TO_CHECK" -type f -exec stat -c "%A %a %u %g %n" {} \;
