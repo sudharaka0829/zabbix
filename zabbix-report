@@ -99,3 +99,7 @@ ProxyTimeout 300
         Require all granted
     </Directory>
 </VirtualHost>
+
+
+
+[Wed Feb 12 13:11:05.356053 2025] [proxy_fcgi:error] [pid 2310025:tid 2310139] [client 184.127.0.216:34344] AH01071: Got error 'Primary script unknown'
