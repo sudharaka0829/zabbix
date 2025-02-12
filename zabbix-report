@@ -118,3 +118,39 @@ ProxyTimeout 300
      ServerName 184.127.0.216:443
 
 </VirtualHost>
+
+
+
+
+<VirtualHost *:443>
+    DocumentRoot /usr/share/zabbix
+    SSLEngine On
+    SSLCertificateFile /etc/httpd/zabbix_ssl/ZABBIXUAT.pem
+    SSLCertificateKeyFile /etc/httpd/zabbix_ssl/ZABBIXUAT.key
+    SSLCACertificateFile /etc/httpd/zabbix_ssl/cacert.pem
+    ServerAdmin you@example.net
+    SSLProtocol -SSLv2 -SSLv3 -TLSv1 -TLSv1.1 +TLSv1.2
+    SSLCipherSuite HIGH:!aNULL:!MD5:!RC4-SHA
+    ServerName 184.127.0.216:443
+
+    <Directory /usr/share/zabbix>
+        Options FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    # Add FastCGI or PHP processing directives
+    # Assuming you're using PHP-FPM or mod_php, update as per your setup
+    
+    # If you're using PHP-FPM, this is the most common setup:
+    ProxyPassMatch ^/(.*\.php)$ fcgi://127.0.0.1:9000/usr/share/zabbix/$1
+    <FilesMatch \.php$>
+        SetHandler "proxy:fcgi://127.0.0.1:9000"
+    </FilesMatch>
+
+    # If you're using mod_php, you don't need FastCGI, just enable mod_php:
+    # LoadModule php_module modules/libphp.so
+    # AddHandler php-script .php
+    # DirectoryIndex index.php
+</VirtualHost>
+
