@@ -1,1 +1,4 @@
 Cannot fetch data.: network.EventLoadingFailed event with ErrorText = 'net::ERR_CONNECTION_REFUSED' was received while loading dashboard.
+
+
+Cannot fetch data.: dashboard failed to get ready, url: 'http://184.127.0.216/zabbix.php?action=dashboard.print&dashboardid=2&from=2025-02-11%2000%3A00%3A00&to=2025-02-12%2000%3A00%3A00': waiting for function failed: timeout.
