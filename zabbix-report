@@ -4,22 +4,5 @@ Cannot fetch data.: network.EventLoadingFailed event with ErrorText = 'net::ERR_
 Cannot fetch data.: dashboard failed to get ready, url: 'http://184.127.0.216/zabbix.php?action=dashboard.print&dashboardid=2&from=2025-02-11%2000%3A00%3A00&to=2025-02-12%2000%3A00%3A00': waiting for function failed: timeout.
 
 
-root@ASOMUMNWB101 ~]# curl -k -v http://184.127.0.216/zabbix.php?action=dashboard.print&dashboardid=2
-[1] 2299880
-[root@ASOMUMNWB101 ~]# *   Trying 184.127.0.216:80...
-* Connected to 184.127.0.216 (184.127.0.216) port 80 (#0)
-> GET /zabbix.php?action=dashboard.print HTTP/1.1
-> Host: 184.127.0.216
-> User-Agent: curl/7.76.1
-> Accept: */*
->
-* Mark bundle as not supporting multiuse
-< HTTP/1.1 404 Not Found
-< Date: Wed, 12 Feb 2025 02:23:08 GMT
-< Server: Apache/2.4.62 (Red Hat Enterprise Linux) OpenSSL/3.2.2
-< X-Powered-By: PHP/8.0.30
-< Transfer-Encoding: chunked
-< Content-Type: text/html; charset=UTF-8
-<
-File not found.
-* Connection #0 to host 184.127.0.216 left intact
+ausearch -m AVC -c zabbix | audit2allow -M zabbix_policy
+setsebool -P httpd_can_network_connect 1
