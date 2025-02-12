@@ -17,3 +17,6 @@ Wed Feb 12 10:06:41.189357 2025] [proxy_fcgi:error] [pid 2298051:tid 2298097] [c
 [Wed Feb 12 10:08:53.619331 2025] [proxy_fcgi:error] [pid 2297824:tid 2297951] [client 184.127.0.250:36007] AH01071: Got error 'PHP message: PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 10485760 bytes) in /usr/share/zabbix/include/classes/api/services/CProblem.php on line 102', referer: https://184.127.0.218/zabbix.php?action=dashboard.view&dashboardid=46
 [Wed Feb 12 10:18:06.120492 2025] [proxy_fcgi:error] [pid 2298051:tid 2298103] [client 184.127.0.216:32988] AH01071: Got error 'Primary script unknown'
 [Wed Feb 12 10:23:08.
+
+
+[Wed Feb 12 10:40:10.129190 2025] [proxy_fcgi:error] [pid 2300935:tid 2301045] [client 184.127.0.216:35634] AH01071: Got error 'Primary script unknown'
