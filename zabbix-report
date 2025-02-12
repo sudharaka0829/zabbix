@@ -103,3 +103,18 @@ ProxyTimeout 300
 
 
 [Wed Feb 12 13:11:05.356053 2025] [proxy_fcgi:error] [pid 2310025:tid 2310139] [client 184.127.0.216:34344] AH01071: Got error 'Primary script unknown'
+
+
+
+<VirtualHost *:443>
+     DocumentRoot /usr/share/zabbix
+     SSLEngine On
+     SSLCertificateFile /etc/httpd/zabbix_ssl/ZABBIXUAT.pem
+     SSLCertificateKeyFile /etc/httpd/zabbix_ssl/ZABBIXUAT.key
+     SSLCACertificateFile /etc/httpd/zabbix_ssl/cacert.pem
+     ServerAdmin you@example.net
+     SSLProtocol -SSLv2 -SSLv3 -TLSv1 -TLSv1.1 +TLSv1.2
+     SSLCipherSuite HIGH:!aNULL:!MD5:!RC4-SHA
+     ServerName 184.127.0.216:443
+
+</VirtualHost>
