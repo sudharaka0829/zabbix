@@ -163,3 +163,4 @@ Cannot fetch data.: Invalid certificate authority detected while loading dashboa
 
 025/02/12 14:04:51.910582 Cannot fetch data.: dashboard failed to get ready, url: 'http://184.127.0.216/zabbix.php?action=dashboard.print&dashboardid=2&from=2025-02-11%2000%3A00%3A00&to=2025-02-12%2000%3A00%3A00': waiting for function failed: timeout.
 
+Cannot fetch data.: Invalid certificate authority detected while loading dashboard. Fix TLS configuration or configure Zabbix web service to ignore TLS certificate errors when accessing frontend URL.
