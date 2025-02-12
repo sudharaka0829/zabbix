@@ -20,3 +20,50 @@ Wed Feb 12 10:06:41.189357 2025] [proxy_fcgi:error] [pid 2298051:tid 2298097] [c
 
 
 [Wed Feb 12 10:40:10.129190 2025] [proxy_fcgi:error] [pid 2300935:tid 2301045] [client 184.127.0.216:35634] AH01071: Got error 'Primary script unknown'
+
+
+
+
+
+cat /etc/httpd/conf.d/zabbix.conf
+#
+# Zabbix monitoring system php web frontend
+#
+
+Alias /zabbix /usr/share/zabbix
+
+ProxyTimeout 300
+
+<Directory "/usr/share/zabbix">
+    Options FollowSymLinks
+    AllowOverride None
+    Require all granted
+
+    <IfModule dir_module>
+        DirectoryIndex index.php
+    </IfModule>
+
+    <FilesMatch \.(php|phar)$>
+        SetHandler "proxy:unix:/run/php-fpm/zabbix.sock|fcgi://localhost"
+    </FilesMatch>
+</Directory>
+
+<Directory "/usr/share/zabbix/conf">
+    Require all denied
+</Directory>
+
+<Directory "/usr/share/zabbix/app">
+    Require all denied
+</Directory>
+
+<Directory "/usr/share/zabbix/include">
+    Require all denied
+</Directory>
+
+<Directory "/usr/share/zabbix/local">
+    Require all denied
+</Directory>
+
+<Directory "/usr/share/zabbix/vendor">
+    Require all denied
+</Directory>
