@@ -67,3 +67,35 @@ ProxyTimeout 300
 <Directory "/usr/share/zabbix/vendor">
     Require all denied
 </Directory>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<VirtualHost *:443>
+    ServerName 184.127.0.216
+
+    SSLEngine on
+    SSLCertificateFile /path/to/certificate.crt
+    SSLCertificateKeyFile /path/to/private.key
+    SSLCertificateChainFile /path/to/chainfile.pem
+
+    DocumentRoot /usr/share/zabbix
+
+    ProxyPassMatch ^/(.*\.php)$ unix:/run/php-fpm/zabbix.sock|fcgi://localhost/usr/share/zabbix
+    # Other necessary directives...
+
+    <Directory "/usr/share/zabbix">
+        Options FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+</VirtualHost>
