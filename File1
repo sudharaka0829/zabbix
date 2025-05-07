@@ -1,1 +1,11 @@
-sudo dnf install -y https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+#!/bin/bash
+
+SERVICE_NAME=php-fpm
+
+# Check if the service is active
+if ! systemctl is-active --quiet $SERVICE_NAME; then
+    echo "$SERVICE_NAME is not running. Restarting..."
+    systemctl restart $SERVICE_NAME
+else
+    echo "$SERVICE_NAME is running."
+fi
