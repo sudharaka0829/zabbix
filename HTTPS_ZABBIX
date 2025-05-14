@@ -6,3 +6,7 @@ Get-ScheduledTask | ForEach-Object {
     }
   } catch {}
 }
+
+
+\Microsoft\Windows\Backup\ScheduledBackup is running for 48 mins
+\MyScripts\DailyCleanup is running for 72 mins
