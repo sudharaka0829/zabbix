@@ -10,3 +10,6 @@ Get-ScheduledTask | ForEach-Object {
 
 \Microsoft\Windows\Backup\ScheduledBackup is running for 48 mins
 \MyScripts\DailyCleanup is running for 72 mins
+
+
+UserParameter=task.longrunning,powershell -NoProfile -Command "Get-ScheduledTask | ForEach-Object { try { $info = Get-ScheduledTaskInfo -TaskName $_.TaskName -TaskPath $_.TaskPath; if ($info.State -eq 'Running' -and ((New-TimeSpan -Start $info.LastRunTime).TotalMinutes -gt 30)) { Write-Output \"$($_.TaskPath)$($_.TaskName) is running for $([int](New-TimeSpan -Start $info.LastRunTime).TotalMinutes) mins\" } } catch {} }"
