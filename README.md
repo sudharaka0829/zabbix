@@ -1,2 +1,1 @@
-sudo ausearch -m AVC,USER_AVC --raw | audit2allow -M zabbix_full_policy
-
+zabbix_cli.auth][None][WARNING][auth.py:116 login]: Failed to log in with _get_username_password_config: ('Failed to log out of Zabbix API: %s', ZabbixAPIRequestError('Error: Invalid request.: Invalid parameter "/": unexpected parameter "auth".')): (-32600) Invalid request. Invalid parameter "/": unexpected parameter "auth".
