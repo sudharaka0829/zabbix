@@ -1,1 +1,44 @@
 [zabbix_cli.auth][None][WARNING][auth.py:116 login]: Failed to log in with _get_username_password_config: ('Failed to log out of Zabbix API: %s', ZabbixAPIRequestError('Error: Invalid request.: Invalid parameter "/": unexpected parameter "auth".')): (-32600) Invalid request. Invalid parameter "/": unexpected parameter "auth".
+
+zabbix_cli.exceptions.AuthError: No authentication method succeeded for http://184.124.0.81/zabbix. Check the logs for more information.
+2025-05-15 14:41:11,284 [httpx][None][INFO][_client.py:1038 _send_single_request]: HTTP Request: POST http://184.124.0.81/zabbix/api_jsonrpc.php "HTTP/1.1 200 OK"
+2025-05-15 14:41:11,284 [zabbix_cli][None][ERROR][console.py:161 exit_err]: Failed to log out of Zabbix API session: ('Failed to log out of Zabbix API: %s', ZabbixAPIRequestError('Error: Invalid request.: Invalid parameter "/": unexpected parameter "auth".')): (-32600) Invalid request. Invalid parameter "/": unexpected parameter "auth".
+2025-05-15 15:06:31,418 [zabbix_cli.pyzabbix.client][None][INFO][client.py:248 __init__]: JSON-RPC Server Endpoint: http://184.124.0.81/zabbix/api_jsonrpc.php
+2025-05-15 15:06:31,419 [zabbix_cli][None][INFO][auth.py:243 login]: Logging in to http://184.124.0.81/zabbix
+2025-05-15 15:06:31,420 [zabbix_cli.auth][None][INFO][auth.py:220 load_auth_file]: No auth file found. Searched in /root/.local/share/zabbix-cli/.zabbix-cli_auth, /root/.zabbix-cli_auth
+2025-05-15 15:06:39,645 [httpx][None][INFO][_client.py:1038 _send_single_request]: HTTP Request: POST http://184.124.0.81/zabbix/api_jsonrpc.php "HTTP/1.1 200 OK"
+2025-05-15 15:06:39,724 [httpx][None][INFO][_client.py:1038 _send_single_request]: HTTP Request: POST http://184.124.0.81/zabbix/api_jsonrpc.php "HTTP/1.1 200 OK"
+2025-05-15 15:06:39,730 [httpx][None][INFO][_client.py:1038 _send_single_request]: HTTP Request: POST http://184.124.0.81/zabbix/api_jsonrpc.php "HTTP/1.1 200 OK"
+2025-05-15 15:06:39,736 [httpx][None][INFO][_client.py:1038 _send_single_request]: HTTP Request: POST http://184.124.0.81/zabbix/api_jsonrpc.php "HTTP/1.1 200 OK"
+2025-05-15 15:06:39,737 [zabbix_cli.auth][None][WARNING][auth.py:116 login]: Failed to log in with _get_username_password_prompt: ('Failed to log out of Zabbix API: %s', ZabbixAPIRequestError('Error: Invalid request.: Invalid parameter "/": unexpected parameter "auth".')): (-32600) Invalid request. Invalid parameter "/": unexpected parameter "auth".
+2025-05-15 15:06:39,737 [zabbix_cli][None][ERROR][console.py:161 exit_err]: No authentication method succeeded for http://184.124.0.81/zabbix. Check the logs for more information.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/zabbix_cli/main.py", line 242, in main
+    app()
+  File "/usr/local/lib/python3.9/site-packages/typer/main.py", line 338, in __call__
+    raise e
+  File "/usr/local/lib/python3.9/site-packages/typer/main.py", line 321, in __call__
+    return get_command(self)(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/click/core.py", line 1157, in __call__
+    return self.main(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/typer/core.py", line 728, in main
+    return _main(
+  File "/usr/local/lib/python3.9/site-packages/typer/core.py", line 197, in _main
+    rv = self.invoke(ctx)
+  File "/usr/local/lib/python3.9/site-packages/click/core.py", line 1666, in invoke
+    rv = super().invoke(ctx)
+  File "/usr/local/lib/python3.9/site-packages/click/core.py", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/usr/local/lib/python3.9/site-packages/click/core.py", line 783, in invoke
+    return __callback(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/typer/main.py", line 703, in wrapper
+    return callback(**use_params)
+  File "/usr/local/lib/python3.9/site-packages/zabbix_cli/main.py", line 154, in main_callback
+    state.login()
+  File "/usr/local/lib/python3.9/site-packages/zabbix_cli/state.py", line 227, in login
+    auth.login(self.client, self.config)
+  File "/usr/local/lib/python3.9/site-packages/zabbix_cli/auth.py", line 245, in login
+    token = auth.login()
+  File "/usr/local/lib/python3.9/site-packages/zabbix_cli/auth.py", line 124, in login
+    raise AuthError(
+zabbix_cli.exceptions.AuthError: No authentication method succeeded for http://184.124.0.81/zabbix. Check the logs for more information.
