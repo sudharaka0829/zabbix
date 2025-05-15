@@ -13,3 +13,12 @@ Get-ScheduledTask | ForEach-Object {
 
 
 UserParameter=task.longrunning,powershell -NoProfile -Command "Get-ScheduledTask | ForEach-Object { try { $info = Get-ScheduledTaskInfo -TaskName $_.TaskName -TaskPath $_.TaskPath; if ($info.State -eq 'Running' -and ((New-TimeSpan -Start $info.LastRunTime).TotalMinutes -gt 30)) { Write-Output \"$($_.TaskPath)$($_.TaskName) is running for $([int](New-TimeSpan -Start $info.LastRunTime).TotalMinutes) mins\" } } catch {} }"
+
+
+
+UserParameter=task.long_running_check,powershell -NoProfile -ExecutionPolicy Bypass -File "C:\zabbix\check_long_running_tasks.ps1"
+UserParameter=task.long_running_check,powershell -NoProfile -ExecutionPolicy Bypass -File "C:\zabbix\check_long_running_tasks.ps1"
+
+
+{host:task.long_running_check.str("is running for")}=1
+
