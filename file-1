@@ -1,2 +1,4 @@
 Start-Sleep -Seconds 30
 Add-Content -Path "C:\Users\SG240432\Documents\log.txt" -Value "Task ran at: $(Get-Date)"
+
+-ExecutionPolicy Bypass -File "C:\Users\Lenovo\Documents\script.ps1"
