@@ -1,4 +1,1 @@
-Start-Sleep -Seconds 30
-Add-Content -Path "C:\Users\SG240432\Documents\log.txt" -Value "Task ran at: $(Get-Date)"
-
--ExecutionPolicy Bypass -File "C:\Users\Lenovo\Documents\script.ps1"
+awk '/Full GC/ { match($0, /->([0-9]+)K.*\(([0-9]+)K\)/, a); if (a[1] && a[2]) printf "%.4f", a[1]/a[2] }' /path/to/your/logfile.log
