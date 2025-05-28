@@ -1,1 +1,4 @@
+
+grep 'Full GC' /path/to/logfile.log | tail -1 | awk -F'[->K()]' '{ printf "%.4f", $(NF-3)/$(NF-1) }'
+
 awk '/Full GC/ { match($0, /->([0-9]+)K.*\(([0-9]+)K\)/, a); if (a[1] && a[2]) printf "%.4f", a[1]/a[2] }' /path/to/your/logfile.log
