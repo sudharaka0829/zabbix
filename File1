@@ -5,7 +5,7 @@
     zabbix_pass: "your_zabbix_password"
     maintenance_name: "ansibletest1"
     description: "TEST1"
-    host: "ASOMPMNAP101"
+    host: "ASOMUMNWB101"
     period: "30m"
     data_collection: "off"
   tasks:
@@ -13,8 +13,11 @@
       shell: |
         export ZABBIX_USER="{{ zabbix_user }}"
         export ZABBIX_PASSWORD="{{ zabbix_pass }}"
-        /usr/local/bin/zabbix-cli create maintenance definition {{ maintenance_name }} \
-        --description "{{ description }}" --host {{ host }} --period {{ period }} --data-collection {{ data_collection }}
+        /usr/local/bin/zabbix-cli create_maintenance_definition {{ maintenance_name }} \
+        --description "{{ description }}" \
+        --host {{ host }} \
+        --period {{ period }} \
+        --data-collection {{ data_collection }}
       environment:
         ZABBIX_USER: "{{ zabbix_user }}"
         ZABBIX_PASSWORD: "{{ zabbix_pass }}"
