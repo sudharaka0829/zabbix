@@ -1,11 +1,20 @@
-#!/bin/bash
-
-SERVICE_NAME=php-fpm
-
-# Check if the service is active
-if ! systemctl is-active --quiet $SERVICE_NAME; then
-    echo "$SERVICE_NAME is not running. Restarting..."
-    systemctl restart $SERVICE_NAME
-else
-    echo "$SERVICE_NAME is running."
-fi
+- name: Create Zabbix maintenance definition via CLI
+  hosts: localhost
+  vars:
+    zabbix_user: "your_zabbix_username"
+    zabbix_pass: "your_zabbix_password"
+    maintenance_name: "ansibletest1"
+    description: "TEST1"
+    host: "ASOMPMNAP101"
+    period: "30m"
+    data_collection: "off"
+  tasks:
+    - name: Run Zabbix CLI to create maintenance
+      shell: |
+        export ZABBIX_USER="{{ zabbix_user }}"
+        export ZABBIX_PASSWORD="{{ zabbix_pass }}"
+        /usr/local/bin/zabbix-cli create maintenance definition {{ maintenance_name }} \
+        --description "{{ description }}" --host {{ host }} --period {{ period }} --data-collection {{ data_collection }}
+      environment:
+        ZABBIX_USER: "{{ zabbix_user }}"
+        ZABBIX_PASSWORD: "{{ zabbix_pass }}"
